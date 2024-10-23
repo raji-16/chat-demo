@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
+import { APP_CONSTANTS } from '../shared/constants/app.constant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalService {
-  key = "pswd-000";
+  key = APP_CONSTANTS.AUTH.KEY;
   constructor() { }
 
   public saveData(key: string, value: string) {

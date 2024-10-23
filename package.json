@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "chat-demo",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:myApp": "node dist/my-app/server/server.mjs"
+    "serve:ssr:myApp": "node dist/chat-demo/server/server.mjs"
   },
   "private": true,
   "dependencies": {
