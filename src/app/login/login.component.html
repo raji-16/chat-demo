@@ -1,0 +1,39 @@
+<div class="c-margin" >
+    <div class="d-flex justify-content-around">
+        <div>
+            <mat-card class="login-card" appearance="outlined">
+                <div class="d-flex flex-row align-items-center justify-content-center">
+                    <div class="h-400"  [@expansion]="state">
+                        <img src="assets/livebot.gif" class="h-100-perc" />
+                    </div>
+                    <div class="d-flex flex-column" [@expansion]="state" >
+                        <mat-card-header class="card-header" [ngClass]="!innerContentEnabled ?'vis-hidden': 'vis-show'">
+                            <mat-card-title>
+                                <p  class="text-center font-weight-bold">
+                                    Hello There!!!!!
+                                </p>
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content [ngClass]="!innerContentEnabled ?'vis-hidden':  'vis-show'">
+                            <mat-form-field  class="user-field">
+                                <mat-label>Please enter your name</mat-label>
+                                <input matInput type="text" [(ngModel)]="userName">
+                                @if (userName) {
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="userName=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                }
+                            </mat-form-field>
+                        </mat-card-content>
+                        <mat-card-actions [ngClass]="!innerContentEnabled ?'vis-hidden':  'vis-show'">
+                            <button  mat-raised-button color="primary" (click)="navigateTo()" [disabled]="!userName">Submit</button>
+                        </mat-card-actions>
+                    </div>
+
+                </div>
+
+            </mat-card>
+        </div>
+
+    </div>
+</div>
