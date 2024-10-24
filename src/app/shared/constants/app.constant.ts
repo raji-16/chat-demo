@@ -1,7 +1,7 @@
 export const APP_CONSTANTS = {
     COMMON_CONSTANTS: {
         CHAT_AREA: 'chatArea',
-        USER_NAME: 'user-name',
+        
     },
     ANIMATE_CONSTANTS: {
         TRANSITION: {
@@ -14,7 +14,8 @@ export const APP_CONSTANTS = {
         },
         ANIMATE_CONVENTION: {
             BODY_EXPANSION: 'bodyExpansion',
-            MESSAGE_ANIMATION: 'messageAnimation'
+            MESSAGE_ANIMATION: 'messageAnimation',
+            LOGIN_EXPANSION:'loginExpansion'
         },
         ANIMATE: {
             ANIMATE_CUBIC: '2000ms cubic-bezier(0.4, 0.0, 0.2, 1)'
@@ -35,6 +36,13 @@ export const APP_CONSTANTS = {
         CHAT_TECH: '/chat-tech'
     },
     AUTH: {
-        KEY: 'pswd-000'
+        KEY: 'pswd-000',
+        USER_NAME: 'user-name',
+        FIRST_NAME: 'first-name',
+        LAST_NAME: 'last-name',
+        EMAIL_ID: 'email-id',
+        PROFILE_URL: 'profile-url',
+        USER_ID: 'user-id',
+        TOKEN_ID: 'token-id'
     }
 }

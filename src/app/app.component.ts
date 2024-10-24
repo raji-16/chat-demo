@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './component/login/login.component';
 import { TechChatComponent } from './component/tech-chat/tech-chat.component';
-import { sharedModule } from './shared.module';
+import { sharedModule } from './shared/module/shared.module';
 
 @Component({
   selector: 'app-root',
