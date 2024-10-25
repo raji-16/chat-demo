@@ -1,48 +1,47 @@
 export const APP_CONSTANTS = {
-    COMMON_CONSTANTS: {
-        CHAT_AREA: 'chatArea',
-        
+  COMMON_CONSTANTS: {
+    CHAT_AREA: "chatArea",
+  },
+  ANIMATE_CONSTANTS: {
+    TRANSITION: {
+      EXPANDED: "expanded",
+      COLLAPSED: "collapsed",
+      VOID: "void",
+      ENTER: ":enter",
+      LEAVE: ":leave",
+      IN: "in",
     },
-    ANIMATE_CONSTANTS: {
-        TRANSITION: {
-            EXPANDED: 'expanded',
-            COLLAPSED: 'collapsed',
-            VOID: 'void',
-            ENTER: ':enter',
-            LEAVE: ':leave',
-            IN: 'in'
-        },
-        ANIMATE_CONVENTION: {
-            BODY_EXPANSION: 'bodyExpansion',
-            MESSAGE_ANIMATION: 'messageAnimation',
-            LOGIN_EXPANSION:'loginExpansion'
-        },
-        ANIMATE: {
-            ANIMATE_CUBIC: '2000ms cubic-bezier(0.4, 0.0, 0.2, 1)'
-        },
-        STYLE: {
-            VISIBLE: 'visible',
-            HIDDEN: 'hidden',
-            LABEL_ZERO_PX: '0px',
-            SYMBOL_ASTERICK: '*'
-        }
+    ANIMATE_CONVENTION: {
+      BODY_EXPANSION: "bodyExpansion",
+      MESSAGE_ANIMATION: "messageAnimation",
+      LOGIN_EXPANSION: "loginExpansion",
     },
-    NUMBER_CONSTANTS: {
-        POINT_TWO: '.2',
-        NUMBER_ONE: '1'
+    ANIMATE: {
+      ANIMATE_CUBIC: "2000ms cubic-bezier(0.4, 0.0, 0.2, 1)",
     },
-    ROUTE: {
-        LOGIN: '/login',
-        CHAT_TECH: '/chat-tech'
+    STYLE: {
+      VISIBLE: "visible",
+      HIDDEN: "hidden",
+      LABEL_ZERO_PX: "0px",
+      SYMBOL_ASTERICK: "*",
     },
-    AUTH: {
-        KEY: 'pswd-000',
-        USER_NAME: 'user-name',
-        FIRST_NAME: 'first-name',
-        LAST_NAME: 'last-name',
-        EMAIL_ID: 'email-id',
-        PROFILE_URL: 'profile-url',
-        USER_ID: 'user-id',
-        TOKEN_ID: 'token-id'
-    }
-}
+  },
+  NUMBER_CONSTANTS: {
+    POINT_TWO: ".2",
+    NUMBER_ONE: "1",
+  },
+  ROUTE: {
+    LOGIN: "/login",
+    CHAT_TECH: "/chat-tech",
+  },
+  AUTH: {
+    KEY: "pswd-000",
+    USER_NAME: "user-name",
+    FIRST_NAME: "first-name",
+    LAST_NAME: "last-name",
+    EMAIL_ID: "email-id",
+    PROFILE_URL: "profile-url",
+    USER_ID: "user-id",
+    TOKEN_ID: "token-id",
+  },
+};

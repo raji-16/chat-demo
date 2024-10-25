@@ -152,24 +152,59 @@
                     can I help you?
                   </div>
                 </div>
+
                 @if (postInput.length > 0) {
-                <div
-                  [@messageAnimation]
-                  class="d-flex flex-end p-1 align-items-center justify-content-end gap-1"
-                  *ngFor="let inp of postInput; let index = index"
-                  #chatArea
-                >
-                  <div
-                    [ngClass]="
-                      postInput
-                        ? ['bottom-right-radius', 'tech-box', 'user-box-input']
-                        : ''
-                    "
+                <div *ngFor="let inp of postInput; let index = index">
+                  <ng-container *ngIf="inp.type === 'user'">
+                    <div
+                      #chatArea
+                      [@messageAnimation]
+                      class="d-flex flex-end p-1 align-items-center justify-content-end gap-1"
+                    >
+                      <div class="bottom-right-radius tech-box user-box-input">
+                        {{ inp.value }}
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="inp.type === 'bot' && inp.value.length > 0"
                   >
-                    {{ inp }}
-                  </div>
+                    <div
+                      #chatArea
+                      class="d-flex p-1 align-items-center gap-1"
+                      [@messageAnimation]
+                    >
+                      <div class="circle-icon">
+                        <img src="assets/bot-img.gif" class="h-100-perc" />
+                      </div>
+                      <div class="tech-box bottom-left-radius">
+                        <ng-container *ngFor="let reply of inp.value">
+                          <div>
+                            {{ reply }}
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </ng-container>
                 </div>
                 }
+
+                <ng-container *ngIf="messageLoader">
+                  <div
+                    #chatArea
+                    class="d-flex p-1 align-items-center gap-1"
+                    [@messageAnimation]
+                  >
+                    <div class="circle-icon">
+                      <img src="assets/bot-img.gif" class="h-100-perc" />
+                    </div>
+                    <div
+                      class="tech-box bottom-left-radius message-loader-container"
+                    >
+                      <div class="message-loader"></div>
+                    </div>
+                  </div>
+                </ng-container>
               </ng-container>
               <ng-container *ngIf="isLoader">
                 <div
