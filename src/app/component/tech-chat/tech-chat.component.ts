@@ -42,6 +42,9 @@ export class TechChatComponent implements OnInit, AfterContentInit {
   profileUrl: string = "";
   finalData: any = [];
   messageLoader: boolean = false;
+  events: string[] = [];
+  opened: boolean;
+  isDark: boolean = true;
   constructor(
     public localService: LocalService,
     public router: Router,

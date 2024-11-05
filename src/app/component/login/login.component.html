@@ -1,106 +1,48 @@
-<!-- <img src="assets/livebot.gif" class="h-100-perc w-100-p" />
-<div class="login-card d-flex flex-row">
-  <div class="h-400 flex-1" [@loginExpansion]="state"></div>
-  <div class="d-flex flex-column flex-2" [@loginExpansion]="state">
-    <div class="d-flex flex-column justify-content-center align-items-center">
-      <div>
-        <p class="text-center font-weight-bold">Sign In</p>
-      </div>
-      <div class="header-divider"></div>
-    </div>
-    <div
-      class="d-flex flex-column justify-content-center align-items-center"
-      [ngClass]="!innerContentEnabled ? 'vis-hidden' : 'vis-show'"
-    >
-      <div>
-        <asl-google-signin-button type="standard" size="medium">
-        </asl-google-signin-button>
-      </div>
-
-      <div class="login-label">or use your email account</div>
-      <mat-form-field class="user-field">
-                <mat-label>Please enter your name</mat-label>
-                <input matInput type="text" [(ngModel)]="userName" />
-                @if (userName) {
-                <button
-                  matSuffix
-                  mat-icon-button
-                  aria-label="Clear"
-                  (click)="userName = ''"
-                >
-                  <mat-icon>close</mat-icon>
-                </button>
-                }
-              </mat-form-field> -->
-<!-- </div>
-  </div>
-</div> -->
-<div class="login-container">
-  <div class="d-flex flex-row">
-    <div class="box-container-1" [@loginExpansion]="state">
-      <img src="assets/livebot.gif" class="h-100-perc w-100-p" />
-    </div>
-    <div class="box-container-2" [@loginExpansion]="expand">
-      <div
-        [ngClass]="!innerContentEnabled ? 'vis-hidden' : 'vis-show'"
-        class="sign-in d-flex flex-column justify-content-center align-items-center"
-      >
-        <div>
-          <p>Sign In</p>
-          <div class="header-divider"></div>
-        </div>
-
-        <div>
-          <asl-google-signin-button type="standard" size="medium">
-          </asl-google-signin-button>
-        </div>
-
-        <div class="d-flex flex-column align-items-center">
-          <div class="login-label">or please enter your user name below</div>
-          <div>
-            <mat-form-field class="user-input-field" floatLabel="auto">
-              <input
-                matInput
-                type="text"
-                [(ngModel)]="userInfo.userName"
-                placeholder="User name"
-              />
-              <!-- @if (userName) {
-                    <button
-                      matSuffix
-                      mat-icon-button
-                      aria-label="Clear"
-                      (click)="userName = ''"
-                    >
-                      <mat-icon>close</mat-icon>
-                    </button>
-                    } -->
-            </mat-form-field>
-          </div>
-
-          <div>
-            <mat-form-field class="user-input-field" floatLabel="auto">
-              <input
-                matInput
-                type="text"
-                [(ngModel)]="userInfo.emailID"
-                placeholder="Email ID"
-              />
-            </mat-form-field>
-          </div>
-          <div>
+<div class="main-container d-flex flex-row">
+    <div class="flex-2"></div>
+    <div class=" box-container flex-2">
+        <div class="logo-box">
             <button
-              mat-raised-button
-              color="primary"
-              (click)="navigateTo()"
-              [disabled]="!userInfo.userName || !userInfo.emailID"
-            >
-              Submit
-            </button>
-          </div>
+            class="side-button"
+            matSuffix
+            mat-icon-button
+            aria-label="Reset"
+          >
+            <mat-icon>person</mat-icon>
+          </button>
         </div>
-      </div>
-      <div></div>
+        <div class="sign-in-box d-flex flex-column align-items-center justify-content-center">
+            <div>
+                <p>Sign In</p>
+                <div class="header-divider"></div>
+            </div>
+
+            <div>
+                <asl-google-signin-button 
+                shape="pill"
+    theme="outline" type="standard" size="medium">
+                </asl-google-signin-button>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <div class="login-label">or please enter your user details below</div>
+                <div>
+                    <mat-form-field class="user-input-field" floatLabel="auto">
+                        <input matInput type="text" [(ngModel)]="userInfo.userName" placeholder="User name" />
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="user-input-field" floatLabel="auto">
+                        <input matInput type="text" [(ngModel)]="userInfo.emailID" placeholder="Email ID" />
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" (click)="navigateTo()"
+                        [disabled]="!userInfo.userName || !userInfo.emailID">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+    <div class="flex-2"></div>
 </div>

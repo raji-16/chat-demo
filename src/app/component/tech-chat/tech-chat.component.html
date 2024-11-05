@@ -1,237 +1,207 @@
-<div class="chat-container card-animate" [@bodyExpansion]="state">
-  <div class="d-flex justify-content-around">
-    <div class="container-box">
-      <div class="d-flex flex-row">
-        <div class="side-nav" [ngStyle]="{ flex: sideNavWidth }">
-          <div class="d-flex flex-row justify-content-end side-nav-divider">
-            <div class="p-2" *ngIf="extendedPanel">
-              <button
-                class="side-button"
-                matSuffix
-                mat-icon-button
-                aria-label="Clear"
-                (click)="openSideNav($event)"
-              >
-                <mat-icon>chevron_left</mat-icon>
-              </button>
+<div class="tech-chat-container d-flex flex-row h-100per">
+  <div>
+    <mat-sidenav-container class="side-nav">
+      <mat-sidenav
+        #sidenav
+        mode="side"
+        [(opened)]="opened"
+        (opened)="events.push('open!')"
+        (closed)="events.push('close!')"
+      >
+        <div class="side-header">
+          <ng-container *ngIf="profileUrl">
+            <div class="side-profile-img">
+              <img class="h-100per w-100per" [src]="profileUrl" />
             </div>
-            <div class="p-2" *ngIf="!extendedPanel">
-              <button
-                class="side-button"
-                matSuffix
-                mat-icon-button
-                aria-label="Clear"
-                (click)="openSideNav($event)"
-              >
-                <mat-icon>chevron_right</mat-icon>
-              </button>
+            <div class="user-name">{{ userName }}</div>
+          </ng-container>
+          <ng-container *ngIf="!profileUrl">
+            <div class="side-profile">
+              <div>{{ userName[0] }}</div>
+            </div>
+            <div class="user-name">{{ userName }}</div>
+          </ng-container>
+        </div>
+          <div
+          class="menu-item w-100per d-flex justify-content-around align-items-center"
+          (click)="clearChat()"
+        >
+          
+          <div>
+            <button
+              class="side-button"
+              matSuffix
+              mat-icon-button
+              aria-label="Reset"
+              (click)="clearChat()"
+            >
+              <mat-icon>restart_alt</mat-icon>
+            </button>
+          </div>
+          <div>Reset</div>
+        </div>
+        <div
+          class="menu-item w-100-p d-flex justify-content-around align-items-center"
+        >
+          
+          <div>
+            <button
+              class="side-button"
+              matSuffix
+              mat-icon-button
+              aria-label="SaveItem"
+            >
+              <mat-icon>bookmark_star</mat-icon>
+            </button>
+          </div>
+          <div>Savelist</div>
+        </div>
+        <div
+          class="menu-item w-100-p d-flex justify-content-around align-items-center"
+          (click)="navigateToLogin()"
+        >
+          
+          <div>
+            <button
+              class="side-button"
+              matSuffix
+              mat-icon-button
+              aria-label="close"
+              (click)="navigateToLogin()"
+            >
+              <mat-icon>logout</mat-icon>
+            </button>
+          </div>
+          <div>Log Out</div>
+        </div>
+
+        
+           <div class="theme-bar"> 
+            <div>
+              <mat-slide-toggle class="dark-toggle" [(ngModel)]="isDark"></mat-slide-toggle> 
+            </div>
+            <div>
+              <span *ngIf="isDark">Dark mode</span>
+              <span *ngIf="!isDark">Light mode</span>
+            </div>
+           
+           </div>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <button
+          class="side-button"
+          matSuffix
+          mat-icon-button
+          aria-label="Reset"
+          (click)="sidenav.toggle()"
+        >
+          <mat-icon *ngIf="!opened">arrow_forward_ios</mat-icon>
+          <mat-icon *ngIf="opened">arrow_back_ios_new</mat-icon>
+        </button>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+  <div class="flex-10 p-1rem">
+    <div class="chat-area d-flex flex-column">
+      <div class="d-flex flex-row align-items-center gap-3 p-1rem divider">
+        <ng-container *ngIf="profileUrl">
+          <div class="profile-url-icon">
+            <img class="h-100per w-100per" [src]="profileUrl" />
+          </div>
+          <div class="profile-name">{{ userName }}</div>
+        </ng-container>
+        <ng-container *ngIf="!profileUrl">
+          <div class="user-logo">
+            <div>{{ userName[0] }}</div>
+          </div>
+          <div class="profile-name">{{ userName }}</div>
+        </ng-container>
+      </div>
+      <div class="box-template flex-5">
+        <ng-container *ngIf="!isLoader">
+          <div class="d-flex p-1rem align-items-center gap-1">
+            <div class="bot-logo">
+              <img src="assets/bot-img.gif" class="h-100per w-100per" />
+            </div>
+            <div class="tech-box bottom-left-radius">
+              Hello <span class="user-det">{{ userName }} !!!</span> How can I
+              help you?
             </div>
           </div>
-          <div class="m-3 d-flex flex-column align-items-start gap-3">
-            <ng-container *ngIf="extendedPanel">
+
+          @if (postInput.length > 0) {
+          <div *ngFor="let inp of postInput; let index = index">
+            <ng-container *ngIf="inp.type === 'user'">
               <div
-                class="menu-item w-100-p d-flex justify-content-between align-items-center"
+                #chatArea
+                [@messageAnimation]
+                class="d-flex flex-end p-1 align-items-center justify-content-end gap-1"
               >
-                <div>Reset</div>
-                <div>
-                  <button
-                    class="side-button"
-                    matSuffix
-                    mat-icon-button
-                    aria-label="Reset"
-                    (click)="clearChat()"
-                  >
-                    <mat-icon>restart_alt</mat-icon>
-                  </button>
-                </div>
-              </div>
-              <div
-                class="menu-item w-100-p d-flex justify-content-between align-items-center"
-              >
-                <div>Savelist</div>
-                <div>
-                  <button
-                    class="side-button"
-                    matSuffix
-                    mat-icon-button
-                    aria-label="SaveItem"
-                  >
-                    <mat-icon>bookmark_star</mat-icon>
-                  </button>
-                </div>
-              </div>
-              <div
-                class="menu-item w-100-p d-flex justify-content-between align-items-center"
-              >
-                <div>Close</div>
-                <div>
-                  <button
-                    class="side-button"
-                    matSuffix
-                    mat-icon-button
-                    aria-label="close"
-                    (click)="navigateToLogin()"
-                  >
-                    <mat-icon>close</mat-icon>
-                  </button>
+                <div class="tech-box user-box-input">
+                  {{ inp.value }}
                 </div>
               </div>
             </ng-container>
-            <ng-container *ngIf="!extendedPanel">
+            <ng-container *ngIf="inp.type === 'bot' && inp.value.length > 0">
               <div
-                class="menu-item w-100-p d-flex justify-content-between align-items-center"
+                #chatArea
+                class="d-flex p-1 align-items-center gap-1"
+                [@messageAnimation]
               >
-                <div>
-                  <button
-                    class="side-button"
-                    matSuffix
-                    mat-icon-button
-                    aria-label="Reset"
-                    (click)="clearChat()"
-                  >
-                    <mat-icon>restart_alt</mat-icon>
-                  </button>
+                <div class="bot-logo">
+                  <img src="assets/bot-img.gif" class="h-100per w-100per" />
                 </div>
-              </div>
-              <div
-                class="menu-item w-100-p d-flex justify-content-between align-items-center"
-              >
-                <div>
-                  <button
-                    class="side-button"
-                    matSuffix
-                    mat-icon-button
-                    aria-label="SaveItem"
-                  >
-                    <mat-icon>bookmark_star</mat-icon>
-                  </button>
-                </div>
-              </div>
-              <div
-                class="menu-item w-100-p d-flex justify-content-between align-items-center"
-              >
-                <div>
-                  <button
-                    class="side-button"
-                    matSuffix
-                    mat-icon-button
-                    aria-label="close"
-                    (click)="navigateToLogin()"
-                  >
-                    <mat-icon>close</mat-icon>
-                  </button>
+                <div class="tech-box bottom-left-radius">
+                  <ng-container *ngFor="let reply of inp.value">
+                    <div>
+                      {{ reply }}
+                    </div>
+                  </ng-container>
                 </div>
               </div>
             </ng-container>
           </div>
-        </div>
-        <div class="chat-box d-flex flex-column justify-content-between">
-          <div class="d-flex flex-column">
-            <div class="d-flex flex-row align-items-center gap-1 p-2 divider">
-              <ng-container *ngIf="profileUrl">
-                <div class="profile-url-icon">
-                  <img class="h-100-perc w-100-p" [src]="profileUrl" />
-                </div>
-                <div>{{ userName }}</div>
-              </ng-container>
-              <ng-container *ngIf="!profileUrl">
-                <div class="profile-icon">
-                  <div>{{ userName[0] }}</div>
-                </div>
-                <div>{{ userName }}</div>
-              </ng-container>
+          }
+
+          <ng-container *ngIf="messageLoader">
+            <div
+              #chatArea
+              class="d-flex p-1 align-items-center gap-1"
+              [@messageAnimation]
+            >
+              <div class="bot-logo">
+                <img src="assets/bot-img.gif" class="h-100per w-100per" />
+              </div>
+              <div class="tech-box bottom-left-radius message-loader-container">
+                <div class="message-loader"></div>
+              </div>
             </div>
-            <div class="box-template">
-              <ng-container *ngIf="!isLoader">
-                <div class="d-flex p-1 align-items-center gap-1">
-                  <div class="circle-icon">
-                    <img src="assets/bot-img.gif" class="h-100-perc" />
-                  </div>
-                  <div class="tech-box bottom-left-radius">
-                    Hello <span class="user-det">{{ userName }} !!!</span> How
-                    can I help you?
-                  </div>
-                </div>
-
-                @if (postInput.length > 0) {
-                <div *ngFor="let inp of postInput; let index = index">
-                  <ng-container *ngIf="inp.type === 'user'">
-                    <div
-                      #chatArea
-                      [@messageAnimation]
-                      class="d-flex flex-end p-1 align-items-center justify-content-end gap-1"
-                    >
-                      <div class="bottom-right-radius tech-box user-box-input">
-                        {{ inp.value }}
-                      </div>
-                    </div>
-                  </ng-container>
-                  <ng-container
-                    *ngIf="inp.type === 'bot' && inp.value.length > 0"
-                  >
-                    <div
-                      #chatArea
-                      class="d-flex p-1 align-items-center gap-1"
-                      [@messageAnimation]
-                    >
-                      <div class="circle-icon">
-                        <img src="assets/bot-img.gif" class="h-100-perc" />
-                      </div>
-                      <div class="tech-box bottom-left-radius">
-                        <ng-container *ngFor="let reply of inp.value">
-                          <div>
-                            {{ reply }}
-                          </div>
-                        </ng-container>
-                      </div>
-                    </div>
-                  </ng-container>
-                </div>
-                }
-
-                <ng-container *ngIf="messageLoader">
-                  <div
-                    #chatArea
-                    class="d-flex p-1 align-items-center gap-1"
-                    [@messageAnimation]
-                  >
-                    <div class="circle-icon">
-                      <img src="assets/bot-img.gif" class="h-100-perc" />
-                    </div>
-                    <div
-                      class="tech-box bottom-left-radius message-loader-container"
-                    >
-                      <div class="message-loader"></div>
-                    </div>
-                  </div>
-                </ng-container>
-              </ng-container>
-              <ng-container *ngIf="isLoader">
-                <div
-                  class="d-flex flex-column align-items-center justify-content-center h-100-perc"
-                >
-                  <div class="loader"></div>
-                </div>
-              </ng-container>
-            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="isLoader">
+          <div
+            class="d-flex flex-column align-items-center justify-content-center h-100-perc"
+          >
+            <div class="loader"></div>
           </div>
+        </ng-container>
+      </div>
 
-          <div class="text-container">
-            <mat-form-field class="text-field">
-              <textarea matInput [(ngModel)]="userInput"></textarea>
-              @if (userInput) {
-              <button
-                matSuffix
-                mat-icon-button
-                aria-label="Clear"
-                (click)="updateInput($event)"
-              >
-                <mat-icon>arrow_upward</mat-icon>
-              </button>
-              }
-            </mat-form-field>
-          </div>
-        </div>
+      <div class="text-container">
+        <mat-form-field class="text-field">
+          <textarea matInput [(ngModel)]="userInput"></textarea>
+          @if (userInput) {
+          <button
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="updateInput($event)"
+          >
+            <mat-icon>arrow_upward</mat-icon>
+          </button>
+          }
+        </mat-form-field>
       </div>
     </div>
   </div>
