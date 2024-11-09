@@ -9,13 +9,14 @@ export class LocalService {
   key = APP_CONSTANTS.AUTH.KEY;
   constructor() { }
 
-  public saveData(key: string, value: string) {
-    localStorage.setItem(key, this.encrypt(value));
+  public saveData(key: string, value: string, isEncrypt = true) {
+    isEncrypt ? localStorage.setItem(key, this.encrypt(value)) : 
+    localStorage.setItem(key, value);
   }
 
-  public getData(key: string) {
+  public getData(key: string, isDecrypt = true) {
     let data = localStorage.getItem(key) || "";
-    return this.decrypt(data);
+    return isDecrypt ? this.decrypt(data) : data ? JSON.parse(data) : '';
   }
   public removeData(key: string) {
     localStorage.removeItem(key);

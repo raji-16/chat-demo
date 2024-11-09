@@ -1,14 +1,25 @@
 import { Injectable } from "@angular/core";
 import { LocalService } from "../../service/local.service";
 import { APP_CONSTANTS } from "../constants/app.constant";
+import { CommonService } from "../../service/common.service";
+import { SocialAuthService } from "@abacritt/angularx-social-login";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 @Injectable({
     providedIn: 'root'
   })
 export class SharedService {
-
-    constructor(public localService: LocalService){
+    menuHistoryItems: Subject<any> = new BehaviorSubject<any>([]);
+    constructor(public localService: LocalService,
+      public router: Router,
+      public socialAuthService: SocialAuthService,
+      public commonService: CommonService){
 
     }
+    /**
+     * @method: update the local storage
+     * @param user 
+     */
     setLocalStorageInfo(user? : any) {
         this.localService.saveData(
             APP_CONSTANTS.AUTH.USER_NAME,
@@ -39,4 +50,63 @@ export class SharedService {
             user.idToken
           );
     }
+    /**
+     * @method: side menu selection
+     * @param eve 
+     */
+    menuSelection(eve) {
+      if (eve.menu == 'fav') {
+        this.router.navigate([APP_CONSTANTS.ROUTE.FAV]);
+      } else if (eve.menu == 'chat') {
+        this.router.navigate([APP_CONSTANTS.ROUTE.CHAT_TECH]);
+      }else if (eve.menu == 'logout') {
+        this.socialAuthService.signOut();
+        this.setMenuHistoryItems([]);
+        this.localService.clearData();
+        this.router.navigate([APP_CONSTANTS.ROUTE.LOGIN]);
+      }
+    }
+
+    /**
+     * @method: update the menu items
+     * @param val 
+     */
+    setMenuHistoryItems(val: any) {
+      this.menuHistoryItems.next(val)
+    }
+
+    /**
+     * @method: fetch the menu items
+     * @returns 
+     */
+    getMenuHistoryItems() {
+     return this.menuHistoryItems;
+    }
+
+    /**
+     * @method: Initialize side nav
+     */
+    initializeSideNav() {
+      this.menuHistoryItems.subscribe((e) => {
+        if (e.length == 0) {
+          this.localService.getData(APP_CONSTANTS.AUTH.HISTORY,false).length === 0 ?
+          this.setMenuHistoryItems(APP_CONSTANTS.COMMON_CONSTANTS.MENU_LIST) : 
+          this.resetMenuItems(APP_CONSTANTS.COMMON_CONSTANTS.MENU_LIST,this.localService.getData(APP_CONSTANTS.AUTH.HISTORY,false));
+        }
+      })
+    }
+
+    /**
+     * @method: Reset menu items
+     * @param listItem 
+     * @param getHistory 
+     */
+    resetMenuItems(listItem,getHistory) {
+      listItem.length >0 &&  listItem.forEach(element => {
+          if(element.type == 'history') {
+            element.child = getHistory;
+          }
+      });
+      this.setMenuHistoryItems(listItem);
+  }
 }

@@ -1,0 +1,89 @@
+<mat-sidenav-container class="side-nav">
+    <!--Side nav content section-->
+    <mat-sidenav
+      #sidenav
+      mode="side"
+      [(opened)]="opened"
+      (opened)="events.push('open!')"
+      (closed)="events.push('close!')"
+    >
+      <!--Side nav headerr section-->
+      <div class="side-header">
+        <ng-container *ngIf="userData.profileUrl">
+          <div class="side-nav-custom-img">
+            <img class="h-100per w-100per" [src]="userData.profileUrl" />
+          </div>
+          <div class="user-name">{{ userData.userName }}</div>
+        </ng-container>
+        <ng-container *ngIf="!userData.profileUrl">
+          <div class="side-nav-user-profile">
+            <div>{{ userData.userName[0] }}</div>
+          </div>
+          <div class="user-name">{{ userData.userName }}</div>
+        </ng-container>
+      </div>
+      <!--Side nave menu section-->
+      <ng-container *ngFor="let menu of menuList">
+        <div class="menu-item w-100-p d-flex align-items-center justify-content-start"  (click)="triggerMenuEvent(menu)">
+          <div>
+            <button
+              class="side-button"
+              matSuffix
+              mat-icon-button
+              aria-label="SaveItem"
+            >
+              <mat-icon>{{ menu.icon }}</mat-icon>
+            </button>
+          </div>
+          <ng-container *ngIf="menu.type ==='history'">
+            <div class="d-flex flex-row justify-content-between w-100per">
+              <div>{{ menu.menuName }}</div>
+              <div >
+                <ng-container *ngIf="menu.child.length > 0">
+                  ({{menu.child.length}})
+                </ng-container></div>
+            </div>
+           
+          </ng-container>
+          <ng-container *ngIf="menu.type !=='history'">
+            
+            <div>{{ menu.menuName }}</div>
+          </ng-container>
+          
+         
+        </div>
+        <div *ngIf="menu.child.length > 0 && showChildHistory">
+          <ng-container *ngFor="let chat of menu.child ">
+              <div class="d-flex justify-content-end child-item" (click)="triggerSideMenu(chat)">
+                <div>{{chat.key }}</div>
+              </div>
+          </ng-container>
+        </div>
+      </ng-container>
+      <!--Side nav footer section-->
+      <div class="theme-bar">
+        <div>
+          <mat-slide-toggle
+            class="dark-toggle"
+            [(ngModel)]="userData.isDark"
+          ></mat-slide-toggle>
+        </div>
+        <div>
+          <span *ngIf="userData.isDark">Dark mode</span>
+          <span *ngIf="!userData.isDark">Light mode</span>
+        </div>
+      </div>
+    </mat-sidenav>
+    <!--Side nav reset section-->
+    <mat-sidenav-content>
+      <button
+        matSuffix
+        mat-icon-button
+        aria-label="Reset"
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon *ngIf="!opened">arrow_forward_ios</mat-icon>
+        <mat-icon *ngIf="opened">arrow_back_ios_new</mat-icon>
+      </button>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

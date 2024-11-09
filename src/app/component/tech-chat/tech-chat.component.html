@@ -1,130 +1,52 @@
 <div class="tech-chat-container d-flex flex-row h-100per">
   <div>
-    <mat-sidenav-container class="side-nav">
-      <mat-sidenav
-        #sidenav
-        mode="side"
-        [(opened)]="opened"
-        (opened)="events.push('open!')"
-        (closed)="events.push('close!')"
-      >
-        <div class="side-header">
-          <ng-container *ngIf="profileUrl">
-            <div class="side-profile-img">
-              <img class="h-100per w-100per" [src]="profileUrl" />
-            </div>
-            <div class="user-name">{{ userName }}</div>
-          </ng-container>
-          <ng-container *ngIf="!profileUrl">
-            <div class="side-profile">
-              <div>{{ userName[0] }}</div>
-            </div>
-            <div class="user-name">{{ userName }}</div>
-          </ng-container>
-        </div>
-          <div
-          class="menu-item w-100per d-flex justify-content-around align-items-center"
-          (click)="clearChat()"
-        >
-          
-          <div>
-            <button
-              class="side-button"
-              matSuffix
-              mat-icon-button
-              aria-label="Reset"
-              (click)="clearChat()"
-            >
-              <mat-icon>restart_alt</mat-icon>
-            </button>
-          </div>
-          <div>Reset</div>
-        </div>
-        <div
-          class="menu-item w-100-p d-flex justify-content-around align-items-center"
-        >
-          
-          <div>
-            <button
-              class="side-button"
-              matSuffix
-              mat-icon-button
-              aria-label="SaveItem"
-            >
-              <mat-icon>bookmark_star</mat-icon>
-            </button>
-          </div>
-          <div>Savelist</div>
-        </div>
-        <div
-          class="menu-item w-100-p d-flex justify-content-around align-items-center"
-          (click)="navigateToLogin()"
-        >
-          
-          <div>
-            <button
-              class="side-button"
-              matSuffix
-              mat-icon-button
-              aria-label="close"
-              (click)="navigateToLogin()"
-            >
-              <mat-icon>logout</mat-icon>
-            </button>
-          </div>
-          <div>Log Out</div>
-        </div>
-
-        
-           <div class="theme-bar"> 
-            <div>
-              <mat-slide-toggle class="dark-toggle" [(ngModel)]="isDark"></mat-slide-toggle> 
-            </div>
-            <div>
-              <span *ngIf="isDark">Dark mode</span>
-              <span *ngIf="!isDark">Light mode</span>
-            </div>
-           
-           </div>
-      </mat-sidenav>
-
-      <mat-sidenav-content>
-        <button
-          class="side-button"
-          matSuffix
-          mat-icon-button
-          aria-label="Reset"
-          (click)="sidenav.toggle()"
-        >
-          <mat-icon *ngIf="!opened">arrow_forward_ios</mat-icon>
-          <mat-icon *ngIf="opened">arrow_back_ios_new</mat-icon>
-        </button>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
+    <!--Side nav section-->
+    <app-side-nav
+      (selectionEvent)="menuNavigation($event)"
+      [userData]="inputData"
+    ></app-side-nav>
   </div>
   <div class="flex-10 p-1rem">
     <div class="chat-area d-flex flex-column">
-      <div class="d-flex flex-row align-items-center gap-3 p-1rem divider">
-        <ng-container *ngIf="profileUrl">
-          <div class="profile-url-icon">
-            <img class="h-100per w-100per" [src]="profileUrl" />
-          </div>
-          <div class="profile-name">{{ userName }}</div>
-        </ng-container>
-        <ng-container *ngIf="!profileUrl">
-          <div class="user-logo">
-            <div>{{ userName[0] }}</div>
-          </div>
-          <div class="profile-name">{{ userName }}</div>
-        </ng-container>
+      <!--Chat area header section-->
+      <div
+        class="d-flex flex-row align-items-center justify-content-between gap-3 p-1rem header-chat-section"
+      >
+        <div class="d-flex flex-row align-items-center gap-3">
+          <ng-container *ngIf="profileUrl">
+            <div class="profile-custom-icon">
+              <img class="h-100per w-100per" [src]="profileUrl" />
+            </div>
+            <div class="profile-name-label">{{ userName }}</div>
+          </ng-container>
+          <ng-container *ngIf="!profileUrl">
+            <div class="profile-user-logo">
+              <div>{{ userName[0] }}</div>
+            </div>
+            <div class="profile-name-label">{{ userName }}</div>
+          </ng-container>
+        </div>
+        <div *ngIf="showChat && postInput.length > 0">
+          <button
+            class="side-button"
+            matSuffix
+            mat-icon-button
+            aria-label="SaveItem"
+            (click)="clearChat()"
+          >
+            <mat-icon>restart_alt</mat-icon>
+          </button>
+        </div>
       </div>
-      <div class="box-template flex-5">
+      <!--Chat area message section-->
+      <div class="message-section flex-5">
+        <!--content section-->
         <ng-container *ngIf="!isLoader">
           <div class="d-flex p-1rem align-items-center gap-1">
-            <div class="bot-logo">
+            <div class="chat-logo">
               <img src="assets/bot-img.gif" class="h-100per w-100per" />
             </div>
-            <div class="tech-box bottom-left-radius">
+            <div class="message-template bottom-left-radius">
               Hello <span class="user-det">{{ userName }} !!!</span> How can I
               help you?
             </div>
@@ -132,53 +54,84 @@
 
           @if (postInput.length > 0) {
           <div *ngFor="let inp of postInput; let index = index">
+            <!--User chat section-->
             <ng-container *ngIf="inp.type === 'user'">
               <div
                 #chatArea
                 [@messageAnimation]
                 class="d-flex flex-end p-1 align-items-center justify-content-end gap-1"
               >
-                <div class="tech-box user-box-input">
+                <div class="message-template user-box-input">
                   {{ inp.value }}
                 </div>
               </div>
             </ng-container>
-            <ng-container *ngIf="inp.type === 'bot' && inp.value.length > 0">
+            <!--Bot chat section-->
+            <ng-container *ngIf="inp.type === 'bot'">
               <div
                 #chatArea
                 class="d-flex p-1 align-items-center gap-1"
                 [@messageAnimation]
               >
-                <div class="bot-logo">
+                <div class="chat-logo">
                   <img src="assets/bot-img.gif" class="h-100per w-100per" />
                 </div>
-                <div class="tech-box bottom-left-radius">
-                  <ng-container *ngFor="let reply of inp.value">
-                    <div>
-                      {{ reply }}
+                <div
+                  class="message-template bottom-left-radius pos-rel mr-5rem flex-1"
+                  (mouseenter)="showChat ? mouseHovering(true,inp) : ''"
+                  (mouseleave)="showChat ? mouseHovering(false,inp) : ''"
+                >
+                    <div class="fav-icon" *ngIf="inp.showHoverFav">
+                      <ng-container *ngIf="inp.isFav">
+                          <button
+                            class="side-button"
+                            matSuffix
+                            mat-icon-button
+                            aria-label="SaveItem"
+                            (click)="markFav(inp, false)"
+                          >
+                            <mat-icon>favorite</mat-icon>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngIf="!inp.isFav">
+                          <button
+                            class="side-button"
+                            matSuffix
+                            mat-icon-button
+                            aria-label="SaveItem"
+                            (click)="markFav(inp, true)"
+                          >
+                            <mat-icon>favorite_outlined</mat-icon>
+                          </button>
+                        </ng-container>
                     </div>
-                  </ng-container>
+                    <div>
+                      {{ inp.value }}
+                    </div>
                 </div>
               </div>
             </ng-container>
           </div>
           }
-
+          <!--Message loader section-->
           <ng-container *ngIf="messageLoader">
             <div
               #chatArea
               class="d-flex p-1 align-items-center gap-1"
               [@messageAnimation]
             >
-              <div class="bot-logo">
+              <div class="chat-logo">
                 <img src="assets/bot-img.gif" class="h-100per w-100per" />
               </div>
-              <div class="tech-box bottom-left-radius message-loader-container">
+              <div
+                class="message-template bottom-left-radius message-loader-container"
+              >
                 <div class="message-loader"></div>
               </div>
             </div>
           </ng-container>
         </ng-container>
+        <!--Refresh loader section-->
         <ng-container *ngIf="isLoader">
           <div
             class="d-flex flex-column align-items-center justify-content-center h-100-perc"
@@ -188,7 +141,7 @@
         </ng-container>
       </div>
 
-      <div class="text-container">
+      <div class="text-container" *ngIf="showChat">
         <mat-form-field class="text-field">
           <textarea matInput [(ngModel)]="userInput"></textarea>
           @if (userInput) {

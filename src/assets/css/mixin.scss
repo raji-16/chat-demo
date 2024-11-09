@@ -41,5 +41,8 @@ $unit: (
         .gap-#{$size} {
             gap: #{$size} !important;
         }
+        .mr-#{$size}#{$unit} {
+            margin-right: #{$size}#{$ut};
+        }
     }
 }
