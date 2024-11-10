@@ -4,7 +4,7 @@ export const APP_CONSTANTS = {
     MENU_LIST: [
       {menuName:'Chat' , icon:'chat', type:'chat', child:[]},
       {menuName:'Favourites' , icon:'favorite', type:'fav', child:[]},
-      {menuName:'History' , icon:'history', type:'history', child: [{}]},
+      {menuName:'History' , icon:'history', type:'history', child: []},
       {menuName:'Log Out' , icon:'logout', type:'logout', child:[]}
     ]
   },

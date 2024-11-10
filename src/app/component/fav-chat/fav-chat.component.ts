@@ -34,7 +34,7 @@ export class FavChatComponent implements OnInit {
   @Input() userData;
   events: string[] = [];
   opened: boolean;
-  menuList: any = APP_CONSTANTS.COMMON_CONSTANTS.MENU_LIST;
+  menuList: any = [];
   inputData: any = {};
   favList: any = [];
   isRemove: boolean = false;
@@ -47,7 +47,7 @@ constructor(
     public sharedService: SharedService
   ) {}
   ngOnInit(): void {
-    this.sharedService.initializeSideNav();
+    this.sharedService.initializeSideNav(true);
     let fav: any = 
       this.localService.getData(APP_CONSTANTS.AUTH.FAVOURITE, false);
     this.favList = fav;

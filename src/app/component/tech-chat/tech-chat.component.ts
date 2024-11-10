@@ -58,9 +58,9 @@ export class TechChatComponent implements OnInit, AfterContentInit {
     public sharedService: SharedService,
     public activatedRouter: ActivatedRoute
   ) {
-    this.sharedService.initializeSideNav();
   }
   ngOnInit(): void {
+    this.sharedService.initializeSideNav(true);
     let getHistory: any = this.localService.getData(
       APP_CONSTANTS.AUTH.HISTORY,
       false

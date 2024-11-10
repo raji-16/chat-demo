@@ -5,6 +5,7 @@ import { CommonService } from "../../service/common.service";
 import { SocialAuthService } from "@abacritt/angularx-social-login";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
+import _, { cloneDeep } from "lodash";
 @Injectable({
     providedIn: 'root'
   })
@@ -61,8 +62,8 @@ export class SharedService {
         this.router.navigate([APP_CONSTANTS.ROUTE.CHAT_TECH]);
       }else if (eve.menu == 'logout') {
         this.socialAuthService.signOut();
-        this.setMenuHistoryItems([]);
         this.localService.clearData();
+        this.setMenuHistoryItems([]);
         this.router.navigate([APP_CONSTANTS.ROUTE.LOGIN]);
       }
     }
@@ -86,12 +87,13 @@ export class SharedService {
     /**
      * @method: Initialize side nav
      */
-    initializeSideNav() {
+    initializeSideNav(isMenu = false) {
+      let menuList = _.cloneDeep(APP_CONSTANTS.COMMON_CONSTANTS.MENU_LIST);
       this.menuHistoryItems.subscribe((e) => {
-        if (e.length == 0) {
+        if (e.length == 0 && isMenu) {
           this.localService.getData(APP_CONSTANTS.AUTH.HISTORY,false).length === 0 ?
-          this.setMenuHistoryItems(APP_CONSTANTS.COMMON_CONSTANTS.MENU_LIST) : 
-          this.resetMenuItems(APP_CONSTANTS.COMMON_CONSTANTS.MENU_LIST,this.localService.getData(APP_CONSTANTS.AUTH.HISTORY,false));
+          this.setMenuHistoryItems(menuList) : 
+          this.resetMenuItems(menuList,this.localService.getData(APP_CONSTANTS.AUTH.HISTORY,false));
         }
       })
     }
