@@ -51,4 +51,8 @@
         font-size: var(--font-size-ex-lg);
     }
   }
+  .overflow-scroll {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
 }

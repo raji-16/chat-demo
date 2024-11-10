@@ -60,13 +60,14 @@
     }
     }
     .dark-toggle {
-      .mdc-switch__track::after {
-        background-color: var(--icon-color) ;
+      .mdc-switch__track::after, .mdc-switch:enabled:hover:not(:focus):not(:active) .mdc-switch__track::after,.mdc-switch:enabled:focus:not(:active) .mdc-switch__track::after {
+        background-color: var(--icon-color) !important;
       }
       .mdc-label {
         color: var(--light-white-1)
       }
-      .mdc-switch--selected:enabled .mdc-switch__handle::after,.mdc-switch--selected:enabled:focus:not(:active) .mdc-switch__handle::after {
+      .mdc-switch--selected:enabled .mdc-switch__handle::after,.mdc-switch--selected:enabled:focus:not(:active) .mdc-switch__handle::after,
+      .mdc-switch--selected:enabled:hover:not(:focus):not(:active) .mdc-switch__handle::after {
         background: var(--container-bar);
     }
     }
