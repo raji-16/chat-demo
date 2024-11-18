@@ -35,7 +35,17 @@
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              {
+                "input": "./src/assets/css/light-mode.scss",
+                "bundleName": "light",
+                "inject": false
+               },
+               {
+                "input": "./src/assets/css/dark-mode.scss",
+                "bundleName": "dark",
+                "inject": false
+               }
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -51,8 +61,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "4mb",
+                  "maximumError": "4MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -104,7 +114,17 @@
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              {
+                "input": "./src/assets/css/light-mode.scss",
+                "bundleName": "light",
+                "inject": false
+               },
+               {
+                "input": "./src/assets/css/dark-mode.scss",
+                "bundleName": "dark",
+                "inject": false
+               }
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

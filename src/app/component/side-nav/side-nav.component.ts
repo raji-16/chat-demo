@@ -7,7 +7,8 @@ import {
     ViewEncapsulation,
     EventEmitter,
     DoCheck,
-    OnDestroy
+    OnDestroy,
+    Renderer2
   } from "@angular/core";
   import { sharedModule } from "../../shared/module/shared.module";
   import { LocalService } from "../../service/local.service";
@@ -21,6 +22,8 @@ import {
   import _, { cloneDeep } from "lodash";
 import { APP_CONSTANTS } from "../../shared/constants/app.constant";
 import { SharedService } from "../../shared/service/shared.service";
+import { ThemeService } from "../../shared/service/theme.service";
+import { Theme } from "../../shared/interface/theme";
   @Component({
     selector: "app-side-nav",
     standalone: true,
@@ -42,9 +45,12 @@ import { SharedService } from "../../shared/service/shared.service";
       public router: Router,
       public socialAuthService: SocialAuthService,
       public commonService: CommonService,
-      public sharedService: SharedService
+      public sharedService: SharedService,
+      public themeService: ThemeService,
+      private renderer2: Renderer2
     ) {}
     ngOnInit(): void {
+      this.themeService.setTheme(Theme.BLACK, this.renderer2);
       this.sharedService.getMenuHistoryItems().subscribe((e)=> {
           if(e.length > 0) {
             this.menuList = [];
@@ -70,6 +76,10 @@ import { SharedService } from "../../shared/service/shared.service";
      */
     triggerSideMenu(val) {
       this.router.navigate(['/history'], {queryParams: {id: val.id}})
+    }
+
+    updateTheme() {
+      this.themeService.setTheme(this.userData.isDark ? Theme.BLACK : Theme.WHITE, this.renderer2);
     }
 
     ngOnDestroy(): void {

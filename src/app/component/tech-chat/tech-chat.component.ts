@@ -4,6 +4,7 @@ import {
   ElementRef,
   OnInit,
   QueryList,
+  Renderer2,
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
@@ -22,6 +23,8 @@ import _, { cloneDeep } from "lodash";
 import { SideNavComponent } from "../side-nav/side-nav.component";
 import { SharedService } from "../../shared/service/shared.service";
 import { timeStamp } from "node:console";
+import { ThemeService } from "../../shared/service/theme.service";
+import { Theme } from "../../shared/interface/theme";
 @Component({
   selector: "app-tech-chat",
   standalone: true,
@@ -56,7 +59,8 @@ export class TechChatComponent implements OnInit, AfterContentInit {
     public socialAuthService: SocialAuthService,
     public commonService: CommonService,
     public sharedService: SharedService,
-    public activatedRouter: ActivatedRoute
+    public activatedRouter: ActivatedRoute,
+   
   ) {
   }
   ngOnInit(): void {
