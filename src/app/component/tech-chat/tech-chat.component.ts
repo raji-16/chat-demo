@@ -7,42 +7,41 @@ import {
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
-} from "@angular/core";
-import { sharedModule } from "../../shared/module/shared.module";
-import { LocalService } from "../../service/local.service";
+} from '@angular/core';
+import { sharedModule } from '../../shared/module/shared.module';
+import { LocalService } from '../../service/local.service';
 import {
   bodyExpansion,
   messageAnimation,
-} from "../../shared/animation/animate";
-import { ActivatedRoute, Router } from "@angular/router";
-import { APP_CONSTANTS } from "../../shared/constants/app.constant";
-import { SocialAuthService } from "@abacritt/angularx-social-login";
-import { CommonService } from "../../service/common.service";
-import _, { cloneDeep } from "lodash";
-import { SideNavComponent } from "../side-nav/side-nav.component";
-import { SharedService } from "../../shared/service/shared.service";
-import { timeStamp } from "node:console";
+} from '../../shared/animation/animate';
+import { ActivatedRoute, Router } from '@angular/router';
+import { APP_CONSTANTS } from '../../shared/constants/app.constant';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { CommonService } from '../../service/common.service';
+import { SideNavComponent } from '../side-nav/side-nav.component';
+import { SharedService } from '../../shared/service/shared.service';
+import { cloneDeep, isEmpty } from 'lodash';
 @Component({
-  selector: "app-tech-chat",
+  selector: 'app-tech-chat',
   standalone: true,
   imports: [sharedModule.import, SideNavComponent],
-  templateUrl: "./tech-chat.component.html",
-  styleUrl: "./tech-chat.component.scss",
+  templateUrl: './tech-chat.component.html',
+  styleUrls: ['./tech-chat.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [bodyExpansion, messageAnimation],
 })
 export class TechChatComponent implements OnInit, AfterContentInit {
-  userName: String = "";
-  userInput: String = "";
+  userName: String = '';
+  userInput: String = '';
   botReply: any = [];
   postInput: any = [];
   @ViewChildren(APP_CONSTANTS.COMMON_CONSTANTS.CHAT_AREA)
-  MyProp: QueryList<ElementRef>;
+  MyProp: any = QueryList<ElementRef>;
   sideNavWidth: string = APP_CONSTANTS.NUMBER_CONSTANTS.POINT_TWO;
   extendedPanel: boolean = false;
   isLoader: boolean = false;
   state: any = APP_CONSTANTS.ANIMATE_CONSTANTS.TRANSITION.COLLAPSED;
-  profileUrl: string = "";
+  profileUrl: string = '';
   finalData: any = [];
   messageLoader: boolean = false;
   inputData: any = {};
@@ -57,8 +56,7 @@ export class TechChatComponent implements OnInit, AfterContentInit {
     public commonService: CommonService,
     public sharedService: SharedService,
     public activatedRouter: ActivatedRoute
-  ) {
-  }
+  ) {}
   ngOnInit(): void {
     this.sharedService.initializeSideNav(true);
     let getHistory: any = this.localService.getData(
@@ -66,8 +64,8 @@ export class TechChatComponent implements OnInit, AfterContentInit {
       false
     );
     this.activatedRouter.queryParamMap.subscribe((e: any) => {
-      if (!_.isEmpty(e.params) && getHistory.length > 0) {
-        getHistory.forEach((element) => {
+      if (!isEmpty(e.params) && getHistory.length > 0) {
+        getHistory.forEach((element: any) => {
           if (element.id === e.params.id) {
             this.showChat = false;
             this.postInput = element.value;
@@ -81,9 +79,9 @@ export class TechChatComponent implements OnInit, AfterContentInit {
     );
     this.userName = this.localService.getData(APP_CONSTANTS.AUTH.USER_NAME);
     this.profileUrl = this.localService.getData(APP_CONSTANTS.AUTH.PROFILE_URL);
-    this.inputData.userName = _.cloneDeep(this.userName);
-    this.inputData.profileUrl = _.cloneDeep(this.profileUrl);
-    this.inputData.isDark = _.cloneDeep(this.isDark);
+    this.inputData.userName = cloneDeep(this.userName);
+    this.inputData.profileUrl = cloneDeep(this.profileUrl);
+    this.inputData.isDark = cloneDeep(this.isDark);
     this.fetchExcelData();
   }
 
@@ -96,7 +94,7 @@ export class TechChatComponent implements OnInit, AfterContentInit {
    * @param event
    */
   updateInput(event: any) {
-    this.postInput.push({ value: this.userInput, type: "user" });
+    this.postInput.push({ value: this.userInput, type: 'user' });
     this.messageLoader = true;
     this.scrollBottom();
     setTimeout(() => {
@@ -105,11 +103,11 @@ export class TechChatComponent implements OnInit, AfterContentInit {
         ? this.postInput.push({
             value: botReply,
             isFav: false,
-            type: "bot",
+            type: 'bot',
             showHoverFav: false,
           })
-        : "";
-      this.userInput = "";
+        : '';
+      this.userInput = '';
       this.messageLoader = false;
       this.scrollBottom();
     }, 500);
@@ -133,54 +131,56 @@ export class TechChatComponent implements OnInit, AfterContentInit {
     this.commonService.fetchData().subscribe((response) => {
       let temp: any = [];
       let keyVal: any = {};
-      response.forEach((element, i) => {
-        if (element.Question) {
-          {
-            _.isEmpty(keyVal[element.Question])
-              ? (keyVal[element.Question] = [])
-              : "";
-            keyVal[element.Question].push(element.Answer);
+      response.forEach(
+        (element: { Question: string | number; Answer: any }, i: any) => {
+          if (element.Question) {
+            {
+              isEmpty(keyVal[element.Question])
+                ? (keyVal[element.Question] = [])
+                : '';
+              keyVal[element.Question].push(element.Answer);
+            }
+          } else {
+            let index = this.findPreviousQnIndex(response, i);
+            element.Answer
+              ? keyVal[response[index].Question].push(element.Answer)
+              : '';
           }
-        } else {
-          let index = this.findPreviousQnIndex(response, i);
-          element.Answer
-            ? keyVal[response[index].Question].push(element.Answer)
-            : "";
         }
-      });
-      this.finalData = _.cloneDeep(keyVal);
+      );
+      this.finalData = cloneDeep(keyVal);
     });
   }
   /**
    * @method: Find previous index
    */
-  findPreviousQnIndex(res, ind) {
+  findPreviousQnIndex(res: string | any[], ind: any) {
     for (let i = ind; i <= res.length; i--) {
       if (res[i - 1].Question) {
         return i - 1;
       }
     }
-    return "";
+    return '';
   }
   /**
    *
    * @param userInp
    * @returns
    */
-  respondToClient(userInp) {
+  respondToClient(userInp: string | String) {
     const data = Object.keys(this.finalData);
     let found = data.find((element) =>
       element
         .toLowerCase()
-        .replace(/\s+/g, "")
-        .includes(userInp.toLowerCase().replace(/\s+/g, ""))
+        .replace(/\s+/g, '')
+        .includes(userInp.toLowerCase().replace(/\s+/g, ''))
     );
     if (!found) {
       found = data.find((element) =>
         userInp
           .toLowerCase()
-          .replace(/\s+/g, "")
-          .includes(element.toLowerCase().replace(/\s+/g, ""))
+          .replace(/\s+/g, '')
+          .includes(element.toLowerCase().replace(/\s+/g, ''))
       );
     }
     return found
@@ -195,18 +195,18 @@ export class TechChatComponent implements OnInit, AfterContentInit {
   scrollBottom() {
     setTimeout(() => {
       this.MyProp.last.nativeElement.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest',
       });
     }, 100);
   }
   /**
    * @method: Mouse hover on user input
-   * @param val 
-   * @param inp 
+   * @param val
+   * @param inp
    */
-  mouseHovering(val, inp) {
+  mouseHovering(val: any, inp: { showHoverFav: boolean }) {
     if (!val) {
       setTimeout(() => {
         inp.showHoverFav = false;
@@ -217,12 +217,16 @@ export class TechChatComponent implements OnInit, AfterContentInit {
   }
   /**
    * @method: Selecting favourite
-   * @param val 
-   * @param remove 
+   * @param val
+   * @param remove
    */
-  markFav(val, remove) {
-    let favList: any = 
-      this.localService.getData(APP_CONSTANTS.AUTH.FAVOURITE, false) ? this.localService.getData(APP_CONSTANTS.AUTH.FAVOURITE, false) : [];
+  markFav(val: { isFav: boolean; value: any; message: any }, remove: any) {
+    let favList: any = this.localService.getData(
+      APP_CONSTANTS.AUTH.FAVOURITE,
+      false
+    )
+      ? this.localService.getData(APP_CONSTANTS.AUTH.FAVOURITE, false)
+      : [];
     if (remove) {
       val.isFav = true;
       let obj = {
@@ -239,7 +243,9 @@ export class TechChatComponent implements OnInit, AfterContentInit {
       );
     } else {
       val.isFav = false;
-      favList.splice(favList.findIndex((e) => e.message == val.message));
+      favList.splice(
+        favList.findIndex((e: { message: any }) => e.message == val.message)
+      );
       favList.length > 0
         ? this.localService.saveData(
             APP_CONSTANTS.AUTH.FAVOURITE,
@@ -252,16 +258,16 @@ export class TechChatComponent implements OnInit, AfterContentInit {
 
   /**
    * @method: Menu navigation
-   * @param eve 
+   * @param eve
    */
-  menuNavigation(eve) {
+  menuNavigation(eve: any) {
     this.sharedService.menuSelection(eve);
   }
 
   /**
    * @method: Storing history when user navigates to other component
    */
-  saveHistory(){
+  saveHistory() {
     let history: any = [];
     if (this.postInput.length > 0) {
       history.push({
@@ -274,7 +280,7 @@ export class TechChatComponent implements OnInit, AfterContentInit {
         false
       );
       if (getHistory.length > 0) {
-        getHistory=  this.checkHistoryList(getHistory);
+        getHistory = this.checkHistoryList(getHistory);
       } else {
         getHistory = history;
       }
@@ -283,29 +289,28 @@ export class TechChatComponent implements OnInit, AfterContentInit {
         JSON.stringify(getHistory),
         false
       );
-      let listItem : any = [];
-    this.sharedService.menuHistoryItems.subscribe((list) => {
-      listItem = list;
-   
-    });
-      this.sharedService.resetMenuItems(listItem,getHistory);
+      let listItem: any = [];
+      this.sharedService.menuHistoryItems.subscribe((list) => {
+        listItem = list;
+      });
+      this.sharedService.resetMenuItems(listItem, getHistory);
     }
   }
-  
+
   /**
-   * @method: Verify the history list 
-   * @param getHistory 
-   * @returns 
+   * @method: Verify the history list
+   * @param getHistory
+   * @returns
    */
-  checkHistoryList(getHistory) {
-    if(getHistory.length < 3) {
+  checkHistoryList(getHistory: { id: string; key: any; value: any }[]) {
+    if (getHistory.length < 3) {
       getHistory.push({
-          id: Math.random().toString(36).slice(2),
-          key: this.postInput[0].value,
-          value: this.postInput,
-        });
+        id: Math.random().toString(36).slice(2),
+        key: this.postInput[0].value,
+        value: this.postInput,
+      });
     } else {
-      getHistory.splice(0,1);
+      getHistory.splice(0, 1);
       getHistory.push({
         id: Math.random().toString(36).slice(2),
         key: this.postInput[0].value,
@@ -315,9 +320,9 @@ export class TechChatComponent implements OnInit, AfterContentInit {
     return getHistory;
   }
 
-  ngOnDestroy(){
-    if (this.activatedRouter.snapshot.url[0].path === 'chat-tech'   ) {
+  ngOnDestroy() {
+    if (this.activatedRouter.snapshot.url[0].path === 'chat-tech') {
       this.saveHistory();
-    } 
+    }
   }
 }

@@ -6,40 +6,40 @@ import {
   Output,
   ViewEncapsulation,
   EventEmitter,
-} from "@angular/core";
-import { sharedModule } from "../../shared/module/shared.module";
-import { LocalService } from "../../service/local.service";
+} from '@angular/core';
+import { sharedModule } from '../../shared/module/shared.module';
+import { LocalService } from '../../service/local.service';
 import {
   bodyExpansion,
   messageAnimation,
-} from "../../shared/animation/animate";
-import { Router } from "@angular/router";
-import { SocialAuthService } from "@abacritt/angularx-social-login";
-import { CommonService } from "../../service/common.service";
-import _, { cloneDeep } from "lodash";
-import { APP_CONSTANTS } from "../../shared/constants/app.constant";
-import { SharedService } from "../../shared/service/shared.service";
-import { SideNavComponent } from "../side-nav/side-nav.component";
+} from '../../shared/animation/animate';
+import { Router } from '@angular/router';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { CommonService } from '../../service/common.service';
+import { APP_CONSTANTS } from '../../shared/constants/app.constant';
+import { SharedService } from '../../shared/service/shared.service';
+import { SideNavComponent } from '../side-nav/side-nav.component';
+import { cloneDeep } from 'lodash';
 @Component({
-  selector: "app-fav-chat",
+  selector: 'app-fav-chat',
   standalone: true,
   imports: [sharedModule.import, SideNavComponent],
-  templateUrl: "./fav-chat.component.html",
-  styleUrl: "./fav-chat.component.scss",
+  templateUrl: './fav-chat.component.html',
+  styleUrls: ['./fav-chat.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [bodyExpansion, messageAnimation],
 })
 export class FavChatComponent implements OnInit {
   @Output() selectionEvent = new EventEmitter<any>();
-  @Input() userData;
+  @Input() userData: any;
   events: string[] = [];
-  opened: boolean;
+  opened: boolean = false;
   menuList: any = [];
   inputData: any = {};
   favList: any = [];
   isRemove: boolean = false;
 
-constructor(
+  constructor(
     public localService: LocalService,
     public router: Router,
     public socialAuthService: SocialAuthService,
@@ -48,25 +48,27 @@ constructor(
   ) {}
   ngOnInit(): void {
     this.sharedService.initializeSideNav(true);
-    let fav: any = 
-      this.localService.getData(APP_CONSTANTS.AUTH.FAVOURITE, false);
+    let fav: any = this.localService.getData(
+      APP_CONSTANTS.AUTH.FAVOURITE,
+      false
+    );
     this.favList = fav;
-    this.inputData.userName = _.cloneDeep(
+    this.inputData.userName = cloneDeep(
       this.localService.getData(APP_CONSTANTS.AUTH.USER_NAME)
     );
-    this.inputData.profileUrl = _.cloneDeep(
+    this.inputData.profileUrl = cloneDeep(
       this.localService.getData(APP_CONSTANTS.AUTH.PROFILE_URL)
     );
-    this.inputData.isDark = _.cloneDeep(
+    this.inputData.isDark = cloneDeep(
       this.localService.getData(APP_CONSTANTS.AUTH.DARK_MODE)
     );
   }
 
   /**
    * @method: Parent menu selection from side panel
-   * @param menu 
+   * @param menu
    */
-  triggerMenuEvent(menu) {
+  triggerMenuEvent(menu: any) {
     this.selectionEvent.emit({ menu: menu.type });
   }
 
@@ -74,14 +76,14 @@ constructor(
    * @method: Removing favourite
    */
   removeFav() {
-    let removeList = this.favList.filter((e) => e.isDelete);
-    removeList.forEach((e) => {
+    let removeList = this.favList.filter((e: any) => e.isDelete);
+    removeList.forEach((e: any) => {
       this.favList.splice(
-        this.favList.findIndex((a) => a.id === e.id),
+        this.favList.findIndex((a: any) => a.id === e.id),
         1
       );
     });
-    this.isRemove = this.favList.some((e) => e.isDelete);
+    this.isRemove = this.favList.some((e: any) => e.isDelete);
     this.localService.saveData(
       APP_CONSTANTS.AUTH.FAVOURITE,
       JSON.stringify(this.favList),
@@ -91,13 +93,13 @@ constructor(
 
   /**
    * @method: Select the listed item
-   * @param fav 
-   * @param type 
+   * @param fav
+   * @param type
    */
-  selectFavItem(fav, type) {
+  selectFavItem(fav: any, type: any) {
     if (type) {
       !fav?.isDelete ? (fav.isDelete = true) : (fav.isDelete = false);
     }
-    this.isRemove = this.favList.some((e) => e.isDelete);
+    this.isRemove = this.favList.some((e: any) => e.isDelete);
   }
 }

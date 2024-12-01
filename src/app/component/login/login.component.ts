@@ -1,30 +1,30 @@
-import { AfterContentInit, Component, ViewEncapsulation } from "@angular/core";
-import { sharedModule } from "../../shared/module/shared.module";
-import { Router, withDebugTracing } from "@angular/router";
-import { LocalService } from "../../service/local.service";
-import { loginExpansion } from "../../shared/animation/animate";
-import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
-import { FormGroup } from "@angular/forms";
-import { SharedService } from "../../shared/service/shared.service";
-import { CommonService } from "../../service/common.service";
+import { AfterContentInit, Component, ViewEncapsulation } from '@angular/core';
+import { sharedModule } from '../../shared/module/shared.module';
+import { Router, withDebugTracing } from '@angular/router';
+import { LocalService } from '../../service/local.service';
+import { loginExpansion } from '../../shared/animation/animate';
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { FormGroup } from '@angular/forms';
+import { SharedService } from '../../shared/service/shared.service';
+import { CommonService } from '../../service/common.service';
 
 @Component({
-  selector: "app-login",
+  selector: 'app-login',
   standalone: true,
   imports: [sharedModule.import],
-  templateUrl: "./login.component.html",
-  styleUrl: "./login.component.scss",
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
   animations: [loginExpansion],
   providers: [SharedService],
   encapsulation: ViewEncapsulation.None,
 })
 export class LoginComponent implements AfterContentInit {
   userInfo = {
-    userName: "",
-    emailID: "",
+    userName: '',
+    emailID: '',
   };
-  state: "expand" | "collapse" = "collapse";
-  expand: "expand" | "collapse" = "expand";
+  state: 'expand' | 'collapse' = 'collapse';
+  expand: 'expand' | 'collapse' = 'expand';
   innerContentEnabled: boolean = false;
   loginForm!: FormGroup;
   socialUser!: SocialUser;
@@ -53,7 +53,7 @@ export class LoginComponent implements AfterContentInit {
       this.socialUser = user;
       this.sharedService.setLocalStorageInfo(user);
       this.isLoggedin = user != null;
-      this.router.navigate(["/chat-tech"]);
+      this.router.navigate(['/chat-tech']);
     });
   }
   /**
@@ -66,7 +66,7 @@ export class LoginComponent implements AfterContentInit {
    * @method: Login using user-name & email-Id
    */
   navigateTo() {
-    this.localService.saveData("user-name", this.userInfo.userName);
-    this.router.navigate(["/chat-tech"]);
+    this.localService.saveData('user-name', this.userInfo.userName);
+    this.router.navigate(['/chat-tech']);
   }
 }

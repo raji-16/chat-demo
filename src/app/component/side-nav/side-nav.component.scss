@@ -1,52 +1,58 @@
 // Side nav section
 .side-nav {
-    color: var(--icon-color);
-    height: 100%;
-    background-color: var(--container-bar);
-    .side-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-      margin: 1rem 0 1rem;
-      border-bottom: 1px solid;
-      .side-nav-custom-img {
-        width: 100px;
-        height: 100px;
-        clip-path: circle();
-      }
-      .side-nav-user-profile {
-        width: 100px;
-        height: 100px;
-        background-color: var(--chat-box-bot);
-        line-height: 100px;
-        border-radius: 50%;
-        font-size: 24px;
-        text-align: center;
-        font-weight: 600;
-        color: #fefdf8;
-        text-transform: capitalize;
-      }
-      .user-name {
-        font-size: 24px;
-        padding-bottom: 1rem;
-      }
+  color: var(--icon-color);
+  height: 100%;
+  background-color: var(--container-bar);
+  .side-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin: 1rem 0 1rem;
+    border-bottom: 1px solid;
+    .side-nav-custom-img {
+      width: 100px;
+      height: 100px;
+      clip-path: circle();
     }
-    .theme-bar{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 2rem;
-      border-top: 1px solid;
-      position: fixed;
+    .side-nav-user-profile {
+      width: 100px;
+      height: 100px;
+      background-color: var(--chat-box-bot);
+      line-height: 100px;
+      border-radius: 50%;
+      font-size: 24px;
+      text-align: center;
+      font-weight: 600;
+      color: #fefdf8;
+      text-transform: capitalize;
+    }
+    .user-name {
+      font-size: 24px;
+      padding-bottom: 1rem;
+    }
+  }
+  .theme-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    border-top: 1px solid;
+    position: fixed;
     bottom: 0;
     padding: 1rem 0.5rem 1rem;
-    .mdc-switch__track {
+    .mat-slide-toggle-bar {
       height: 1.25rem;
-    border-radius: 1rem;
+      border-radius: 1rem;
     }
-    .mdc-switch__icons{
-      display: none;
+    .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+      background-color: var(--icon-color) !important;
+    }
+    .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+      background: var(--container-bar);
+    }
+    .mat-slide-toggle-thumb-container {
+      top: 0px !important;
     }
     .light-toggle {
       .mdc-switch__track::after {
@@ -55,39 +61,38 @@
       .mdc-label {
         color: black;
       }
-      .mdc-switch--selected:enabled .mdc-switch__handle::after,.mdc-switch--selected:enabled:focus:not(:active) .mdc-switch__handle::after {
-        background: green  !important;
-    }
+      .mdc-switch--selected:enabled .mdc-switch__handle::after,
+      .mdc-switch--selected:enabled:focus:not(:active)
+        .mdc-switch__handle::after {
+        background: green !important;
+      }
     }
     .dark-toggle {
-      .mdc-switch__track::after, .mdc-switch:enabled:hover:not(:focus):not(:active) .mdc-switch__track::after,.mdc-switch:enabled:focus:not(:active) .mdc-switch__track::after {
+      .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
         background-color: var(--icon-color) !important;
       }
       .mdc-label {
-        color: var(--light-white-1)
+        color: var(--light-white-1);
       }
-      .mdc-switch--selected:enabled .mdc-switch__handle::after,.mdc-switch--selected:enabled:focus:not(:active) .mdc-switch__handle::after,
-      .mdc-switch--selected:enabled:hover:not(:focus):not(:active) .mdc-switch__handle::after {
-        background: var(--container-bar);
-    }
-    }
-    }
-    .menu-item, .child-item {
-      width: 10rem;
-      padding: 0 0.5rem 0;
-      cursor: pointer;
-    }
-    .menu-item:hover, .child-item:hover {
-      background-color: var(--chat-box-bot);
-    }
-    .mat-drawer.mat-drawer-side {
-      color: var(--icon-color);
-      background-color: var(--container-bar);
-    }
-    .mat-drawer-content {
-      width: 3rem !important;
-      color: var(--icon-color);
-    background-color: var(--container-bar);
     }
   }
- 
+  .menu-item,
+  .child-item {
+    width: 10rem;
+    padding: 0 0.5rem 0;
+    cursor: pointer;
+  }
+  .menu-item:hover,
+  .child-item:hover {
+    background-color: var(--chat-box-bot);
+  }
+  .mat-drawer.mat-drawer-side {
+    color: var(--icon-color);
+    background-color: var(--container-bar);
+  }
+  .mat-drawer-content {
+    width: 3rem !important;
+    color: var(--icon-color);
+    background-color: var(--container-bar);
+  }
+}

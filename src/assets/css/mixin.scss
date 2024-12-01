@@ -1,48 +1,48 @@
 $position: (
-    top: 't',
-    right: 'r',
-    left: 'l',
-    bottom: 'b',
+  top: "t",
+  right: "r",
+  left: "l",
+  bottom: "b",
 );
 $unit: (
-    rem: 'rem',
-    per: '%',
-    px: 'px',
-    vh: 'vh',
-    vw: 'vw',
-    ch: 'ch',
+  rem: "rem",
+  per: "%",
+  px: "px",
+  vh: "vh",
+  vw: "vw",
+  ch: "ch",
 );
 
 @for $size from 0 through 100 {
-    @each $unit, $ut in $unit {
-        @each $position, $pos in $position {
-            .m-#{$pos}-#{$size}#{$unit} {
-                margin-#{$position}: #{$size}#{$ut};
-            }
-            .p-#{$pos}-#{$size}#{$unit} {
-                padding-#{$position}: #{$size}#{$ut};
-            }
-        }
-        .m-#{$size}#{$unit} {
-            margin: #{$size}#{$ut};
-        }
-        .p-#{$size}#{$unit} {
-            padding: #{$size}#{$ut};
-        }
-        .w-#{$size}#{$unit} {
-            width: #{$size}#{$ut} !important;
-        }
-        .flex-#{$size} {
-            flex:#{$size} !important;
-        }
-        .h-#{$size}#{$unit} {
-            height: #{$size}#{$ut} !important;
-        }
-        .gap-#{$size} {
-            gap: #{$size} !important;
-        }
-        .mr-#{$size}#{$unit} {
-            margin-right: #{$size}#{$ut};
-        }
+  @each $unit, $ut in $unit {
+    @each $position, $pos in $position {
+      .m-#{$pos}-#{$size}#{$unit} {
+        margin-#{$position}: #{$size}#{$ut};
+      }
+      .p-#{$pos}-#{$size}#{$unit} {
+        padding-#{$position}: #{$size}#{$ut};
+      }
     }
+    .m-#{$size}#{$unit} {
+      margin: #{$size}#{$ut};
+    }
+    .p-#{$size}#{$unit} {
+      padding: #{$size}#{$ut};
+    }
+    .w-#{$size}#{$unit} {
+      width: #{$size}#{$ut} !important;
+    }
+    .flex-#{$size} {
+      flex: #{$size} !important;
+    }
+    .h-#{$size}#{$unit} {
+      height: #{$size}#{$ut} !important;
+    }
+    .gap-#{$size}#{$unit} {
+      gap: #{$size}#{$ut} !important;
+    }
+    .mr-#{$size}#{$unit} {
+      margin-right: #{$size}#{$ut};
+    }
+  }
 }

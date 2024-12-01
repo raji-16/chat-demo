@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 // Material Form Controls
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -40,14 +39,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 export const sharedModule = {
-    import: [
-      GoogleSigninButtonModule,
+  import: [
+    GoogleSigninButtonModule,
     FormsModule,
     CommonModule,
-    MatAutocompleteModule,
     MatCheckboxModule,
     MatDatepickerModule,
     MatFormFieldModule,
@@ -81,7 +79,6 @@ export const sharedModule = {
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
-    MatAutocompleteModule,
     MatCheckboxModule,
     MatDatepickerModule,
     MatFormFieldModule,
@@ -115,6 +112,6 @@ export const sharedModule = {
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
-    MatTableModule
-    ]
-  };
+    MatTableModule,
+  ],
+};

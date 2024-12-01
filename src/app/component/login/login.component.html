@@ -1,48 +1,62 @@
 <div class="main-container d-flex flex-row">
-    <div class="flex-2"></div>
-    <div class=" box-container flex-2">
-        <div class="logo-box">
-            <button
-            class="side-button"
-            matSuffix
-            mat-icon-button
-            aria-label="Reset"
+  <div class="flex-2"></div>
+  <div class="box-container flex-2">
+    <div class="logo-box">
+      <button class="side-button" matSuffix mat-icon-button aria-label="Reset">
+        <mat-icon>person</mat-icon>
+      </button>
+    </div>
+    <div
+      class="sign-in-box d-flex flex-column align-items-center justify-content-center"
+    >
+      <div>
+        <p>Sign In</p>
+        <div class="header-divider"></div>
+      </div>
+
+      <div>
+        <asl-google-signin-button
+          shape="pill"
+          theme="outline"
+          type="standard"
+          size="medium"
+        >
+        </asl-google-signin-button>
+      </div>
+      <div class="d-flex flex-column align-items-center">
+        <div class="login-label">or please enter your user details below</div>
+        <div>
+          <mat-form-field class="user-input-field" floatLabel="never">
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="userInfo.userName"
+              placeholder="User name"
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="user-input-field" floatLabel="never">
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="userInfo.emailID"
+              placeholder="Email ID"
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="navigateTo()"
+            [disabled]="!userInfo.userName || !userInfo.emailID"
           >
-            <mat-icon>person</mat-icon>
+            Submit
           </button>
         </div>
-        <div class="sign-in-box d-flex flex-column align-items-center justify-content-center">
-            <div>
-                <p>Sign In</p>
-                <div class="header-divider"></div>
-            </div>
-
-            <div>
-                <asl-google-signin-button 
-                shape="pill"
-    theme="outline" type="standard" size="medium">
-                </asl-google-signin-button>
-            </div>
-            <div class="d-flex flex-column align-items-center">
-                <div class="login-label">or please enter your user details below</div>
-                <div>
-                    <mat-form-field class="user-input-field" floatLabel="auto">
-                        <input matInput type="text" [(ngModel)]="userInfo.userName" placeholder="User name" />
-                    </mat-form-field>
-                </div>
-                <div>
-                    <mat-form-field class="user-input-field" floatLabel="auto">
-                        <input matInput type="text" [(ngModel)]="userInfo.emailID" placeholder="Email ID" />
-                    </mat-form-field>
-                </div>
-                <div>
-                    <button mat-raised-button color="primary" (click)="navigateTo()"
-                        [disabled]="!userInfo.userName || !userInfo.emailID">
-                        Submit
-                    </button>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="flex-2"></div>
+  </div>
+  <div class="flex-2"></div>
 </div>
