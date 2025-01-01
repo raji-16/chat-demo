@@ -1,0 +1,1 @@
+const sql = `CREATE TABLE IF NOT EXISTS address(id INTEGER PRIMARY KEY,country,full_name,address_line1,address_line2,city,state,zipcode)`;

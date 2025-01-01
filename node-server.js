@@ -1,12 +1,18 @@
 const http = require("http");
 require("dotenv").config();
 const getReq = require("./server/get-request");
-const PORT = process.env["PORT"] || 5001;
-
+const PORT = process.env["PORT"] || 5000;
+const AppDAO = require("./server/dao");
+const dao = new AppDAO("./database.sqlite3");
+const requestClass = new getReq();
 const server = http.createServer((req, res) => {
   switch (req.method) {
     case "GET":
-      getReq(req, res);
+      // getReq(req, res);
+      requestClass.getRequest(req, res);
+      break;
+    case "POST":
+      requestClass.postRequest(req, res);
       break;
     default:
       res.statusCode = 404;
@@ -21,3 +27,11 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
 });
+
+// const db = new sqlite3.Database("./test.db", sqlite3.OPEN_READWRITE, (err) => {
+//   if (err) {
+//     return console.error(err.message);
+//   } else {
+//     return console.log("DB connected");
+//   }
+// });
