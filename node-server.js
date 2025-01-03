@@ -1,8 +1,8 @@
 const http = require("http");
 require("dotenv").config();
-const getReq = require("./server/get-request");
+const getReq = require("./server/chat-demo.controller");
 const PORT = process.env["PORT"] || 5000;
-const AppDAO = require("./server/dao");
+const AppDAO = require("./server/db.service");
 const dao = new AppDAO("./database.sqlite3");
 const requestClass = new getReq();
 const server = http.createServer((req, res) => {

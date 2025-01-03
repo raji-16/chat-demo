@@ -1,7 +1,8 @@
 const XLSX = require("xlsx");
-const controller = require("./controller.js");
+const service = require("./chat-demo.service.js");
 const { response } = require("express");
 class requestClassComponent {
+  chatService = new service();
   constructor() {}
   /**
    * @method: Get Request
@@ -11,13 +12,14 @@ class requestClassComponent {
   getRequest(req, res) {
     if (req.url === "/api/fetchDownloadedData") {
       this.setResponseHeader(res);
-      let data = controller.fetchData();
+      let data = service.fetchData();
       if (data.length > 0) {
         res.statusCode = 200;
         res.write(JSON.stringify(data));
       } else {
         this.sendErrStatus();
       }
+    } else if (req.url === "/api/fetchFavourite") {
     } else {
       this.sendFailureResponse(res);
     }
@@ -29,17 +31,22 @@ class requestClassComponent {
    * @param {*} res
    */
   postRequest(req, res) {
-    console.log("POST 1");
-
-    console.log("------------------------------------");
     if (req.url === "/api/setFavouriteMessage") {
       this.setResponseHeader(res);
-      console.log(req);
-      console.log("POST");
-      res.write(req);
+      var body = [];
+      req
+        .on("data", (chunk) => {
+          body.push(chunk);
+        })
+        .on("end", () => {
+          body = Buffer.concat(body).toString();
+          // if (body) console.log(body);
+          this.chatService.insertFavRecord(body);
+        });
     }
+
     console.log(req.url);
-    res.end();
+    res.end("It Works!!");
   }
 
   /**
@@ -71,6 +78,19 @@ class requestClassComponent {
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
     );
+  }
+
+  async fetchJSONContent(req) {
+    var body = [];
+    req
+      .on("data", function (chunk) {
+        body.push(chunk);
+      })
+      .on("end", function () {
+        body = Buffer.concat(body).toString();
+        // if (body) console.log(body);
+        return body;
+      });
   }
 }
 module.exports = requestClassComponent;
