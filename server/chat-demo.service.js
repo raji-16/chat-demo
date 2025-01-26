@@ -4,6 +4,7 @@ const { resolve } = require("@angular/compiler-cli");
 const { retry } = require("rxjs");
 class ChatDemoService {
   repositry = new chatRepository();
+
   fetchData() {
     let workbook = XLSX.readFile("./public/SheetJS.xlsx");
     let sheet_name_list = workbook.SheetNames;
@@ -36,26 +37,45 @@ class ChatDemoService {
       if (res.id || res.id === 0) {
         console.log("Table created successfully");
         if (param && param.favList && param.isActive && param.createdBy) {
-          this.repositry
-            .updateTable(
-              `INSERT INTO favourite_list (fav_list, is_active, created_by)
+          let details = {
+            query: `INSERT INTO favourite_list (fav_list, is_active, created_by)
               VALUES (?, ?, ?)`,
-              [param.favList, param.isActive, param.createdBy]
-            )
+            param: [param.favList, param.isActive, param.createdBy],
+          };
+          //update query
+          if (param.id) {
+            console.log("Update Query");
+            details = {
+              query: `UPDATE favourite_list
+                SET is_active = ?, created_by = ?
+                WHERE id = ?`,
+              param: [param.isActive, param.createdBy, param.id],
+            };
+          }
+          this.repositry
+            .updateTable(details.query, details.param)
             .then((result) => {
-              resolve(result);
+              resolve({
+                message: param.id
+                  ? "data updated successfully"
+                  : "data inserted successfully",
+                type: "success",
+              });
             })
             .catch((err) => {
               console.log(
                 "Error in updateFavouriteList: " + JSON.stringify(err)
               );
-              resolve(err);
+              resolve({ message: err, type: "failure" });
             });
         } else {
-          resolve({ message: "param is undefined" });
+          resolve({ message: "param is undefined", type: "failure" });
         }
       } else {
-        resolve({ message: "favourite_list table not created" });
+        resolve({
+          message: "favourite_list table not created",
+          type: "failure",
+        });
       }
     });
   }

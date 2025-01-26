@@ -12,7 +12,7 @@ class requestClassComponent {
   getRequest(req, res) {
     if (req.url === "/api/fetchDownloadedData") {
       this.setResponseHeader(res);
-      let data = service.fetchData();
+      let data = this.chatService.fetchData();
       if (data.length > 0) {
         res.statusCode = 200;
         res.write(JSON.stringify(data));
@@ -20,7 +20,7 @@ class requestClassComponent {
         this.sendErrStatus();
       }
     } else if (req.url === "/api/fetchFavourite") {
-      let data = service.fetchData();
+      let data = this.chatService.fetchData();
       if (data.length > 0) {
         res.statusCode = 200;
         res.write(JSON.stringify(data));
@@ -59,7 +59,9 @@ class requestClassComponent {
                 res.end(err);
               });
           } else {
-            res.end(JSON.stringify({ message: "object is empty" }));
+            res.end(
+              JSON.stringify({ message: "object is empty", type: "failure" })
+            );
           }
         });
     }
@@ -89,7 +91,7 @@ class requestClassComponent {
   setResponseHeader(res) {
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.setHeader("Access-Control-Allow-Methods", "POST,GET, PUT");
     res.setHeader(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"

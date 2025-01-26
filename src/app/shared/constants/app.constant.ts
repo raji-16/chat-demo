@@ -2,11 +2,11 @@ export const APP_CONSTANTS = {
   COMMON_CONSTANTS: {
     CHAT_AREA: "chatArea",
     MENU_LIST: [
-      {menuName:'Chat' , icon:'chat', type:'chat', child:[]},
-      {menuName:'Favourites' , icon:'favorite', type:'fav', child:[]},
-      {menuName:'History' , icon:'history', type:'history', child: []},
-      {menuName:'Log Out' , icon:'logout', type:'logout', child:[]}
-    ]
+      { menuName: "Chat", icon: "chat", type: "chat", child: [] },
+      { menuName: "Favourites", icon: "favorite", type: "fav", child: [] },
+      { menuName: "History", icon: "history", type: "history", child: [] },
+      { menuName: "Log Out", icon: "logout", type: "logout", child: [] },
+    ],
   },
   ANIMATE_CONSTANTS: {
     TRANSITION: {
@@ -39,7 +39,7 @@ export const APP_CONSTANTS = {
   ROUTE: {
     LOGIN: "/login",
     CHAT_TECH: "/chat-tech",
-    FAV: "/fav"
+    FAV: "/fav",
   },
   AUTH: {
     KEY: "pswd-000",
@@ -50,8 +50,14 @@ export const APP_CONSTANTS = {
     PROFILE_URL: "profile-url",
     USER_ID: "user-id",
     TOKEN_ID: "token-id",
-    DARK_MODE:'dark_mode',
-    FAVOURITE: 'favourite',
-    HISTORY: 'history'
+    DARK_MODE: "dark_mode",
+    FAVOURITE: "favourite",
+    HISTORY: "history",
+  },
+
+  API_CONSTANT: {
+    BASE_URL: "http://localhost:5000/",
+    FETCH_DOWNLOAD_DATA: "api/fetchDownloadedData",
+    UPDATE_FAVOURITE: "api/setFavouriteMessage",
   },
 };
