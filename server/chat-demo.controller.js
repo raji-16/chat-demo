@@ -19,14 +19,27 @@ class requestClassComponent {
       } else {
         this.sendErrStatus();
       }
-    } else if (req.url === "/api/fetchFavourite") {
-      let data = this.chatService.fetchData();
-      if (data.length > 0) {
-        res.statusCode = 200;
-        res.write(JSON.stringify(data));
-      } else {
-        this.sendErrStatus();
-      }
+    } else if (req.url === "/api/fetchFavouriteRecord") {
+      this.setResponseHeader(res);
+      this.chatService
+        .fetchFavouriteList()
+        .then((data) => {
+          console.log(
+            "fetchFavouriteRecord Controller: " + JSON.stringify(data)
+          );
+          res.statusCode = 200;
+          if (data.type === "success") {
+            console.log("Result");
+            res.write(JSON.stringify(data));
+          } else {
+            res.write({ message: "No data found", type: "success" });
+          }
+        })
+        .catch((err) => {
+          res.statusCode = 500;
+          console.log("Error");
+          console.log(err);
+        });
     } else {
       this.sendFailureResponse(res);
     }
@@ -94,12 +107,13 @@ class requestClassComponent {
    * @param {*} res
    */
   setResponseHeader(res) {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-    res.setHeader("Access-Control-Allow-Methods", "POST,GET, PUT");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
     res.setHeader(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
     );
+    res.setHeader("Content-Type", "application/json");
   }
 
   async fetchJSONContent(req) {

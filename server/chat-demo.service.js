@@ -80,6 +80,22 @@ class ChatDemoService {
       }
     });
   }
+
+  async fetchFavouriteList() {
+    return new Promise(async (resolve, reject) => {
+      console.log("started");
+      this.repositry
+        .fetchFavRecords()
+        .then((result) => {
+          console.log("result -------------");
+          resolve({ type: "success", data: result });
+        })
+        .catch((err) => {
+          console.log("Error in fetchFavouriteList: " + JSON.stringify(err));
+          resolve({ message: err, type: "failure" });
+        });
+    });
+  }
 }
 
 module.exports = ChatDemoService;
