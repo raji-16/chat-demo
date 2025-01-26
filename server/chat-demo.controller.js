@@ -20,6 +20,13 @@ class requestClassComponent {
         this.sendErrStatus();
       }
     } else if (req.url === "/api/fetchFavourite") {
+      let data = service.fetchData();
+      if (data.length > 0) {
+        res.statusCode = 200;
+        res.write(JSON.stringify(data));
+      } else {
+        this.sendErrStatus();
+      }
     } else {
       this.sendFailureResponse(res);
     }
@@ -38,15 +45,24 @@ class requestClassComponent {
         .on("data", (chunk) => {
           body.push(chunk);
         })
-        .on("end", () => {
+        .on("end", async () => {
           body = Buffer.concat(body).toString();
-          // if (body) console.log(body);
-          this.chatService.insertFavRecord(body);
+          console.log(req.url);
+          if (body) {
+            this.chatService
+              .insertFavRecord(body)
+              .then((data) => {
+                console.log("Controller: " + data);
+                res.end(data);
+              })
+              .catch((err) => {
+                res.end(err);
+              });
+          } else {
+            res.end(JSON.stringify({ message: "object is empty" }));
+          }
         });
     }
-
-    console.log(req.url);
-    res.end("It Works!!");
   }
 
   /**
