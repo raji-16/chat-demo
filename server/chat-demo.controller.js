@@ -53,15 +53,20 @@ class requestClassComponent {
               .insertFavRecord(body)
               .then((data) => {
                 console.log("Controller: " + data);
-                res.end(data);
+                res.statusCode = 200;
+                res.write(data);
+                res.end();
               })
               .catch((err) => {
-                res.end(err);
+                res.statusCode = 500;
+                res.write(err);
+                res.end();
               });
           } else {
-            res.end(
+            res.write(
               JSON.stringify({ message: "object is empty", type: "failure" })
             );
+            res.end();
           }
         });
     }
@@ -89,8 +94,7 @@ class requestClassComponent {
    * @param {*} res
    */
   setResponseHeader(res) {
-    res.setHeader("Content-Type", "application/json");
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
     res.setHeader("Access-Control-Allow-Methods", "POST,GET, PUT");
     res.setHeader(
       "Access-Control-Allow-Headers",

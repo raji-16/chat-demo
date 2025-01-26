@@ -37,6 +37,7 @@ class ChatDemoService {
       if (res.id || res.id === 0) {
         console.log("Table created successfully");
         if (param && param.favList && param.isActive && param.createdBy) {
+          //insert query
           let details = {
             query: `INSERT INTO favourite_list (fav_list, is_active, created_by)
               VALUES (?, ?, ?)`,
