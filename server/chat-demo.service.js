@@ -1,7 +1,5 @@
 const XLSX = require("xlsx");
 const chatRepository = require("./chat-demo.repositry");
-const { resolve } = require("@angular/compiler-cli");
-const { retry } = require("rxjs");
 class ChatDemoService {
   repositry = new chatRepository();
 

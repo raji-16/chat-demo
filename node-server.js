@@ -6,6 +6,18 @@ const AppDAO = require("./server/db.service");
 const dao = new AppDAO("./database.sqlite3");
 const requestClass = new getReq();
 const server = http.createServer((req, res) => {
+  // ✅ Handle CORS headers for all responses
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Allow all origins (change this for security)
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+
+  // ✅ Handle preflight (OPTIONS) requests
+  if (req.method === "OPTIONS") {
+    res.writeHead(204); // No content response for preflight
+    res.end();
+    return;
+  }
   switch (req.method) {
     case "GET":
       // getReq(req, res);

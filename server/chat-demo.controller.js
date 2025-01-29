@@ -29,21 +29,23 @@ class requestClassComponent {
           );
           res.statusCode = 200;
           if (data.type === "success") {
-            console.log("Result");
+            console.log("Result: ");
             res.write(JSON.stringify(data));
+            res.end();
           } else {
             res.write({ message: "No data found", type: "success" });
+            res.end();
           }
         })
         .catch((err) => {
           res.statusCode = 500;
           console.log("Error");
           console.log(err);
+          res.end();
         });
     } else {
       this.sendFailureResponse(res);
     }
-    res.end();
   }
   /**
    * @method: Post request
