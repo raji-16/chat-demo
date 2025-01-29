@@ -59,5 +59,6 @@ export const APP_CONSTANTS = {
     BASE_URL: "http://localhost:5000/",
     FETCH_DOWNLOAD_DATA: "api/fetchDownloadedData",
     UPDATE_FAVOURITE: "api/setFavouriteMessage",
+    FETCH_FAVOURITE: "api/fetchFavouriteRecord",
   },
 };

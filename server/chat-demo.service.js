@@ -79,13 +79,13 @@ class ChatDemoService {
     });
   }
 
-  async fetchFavouriteList() {
+  async fetchFavouriteList(param) {
     return new Promise(async (resolve, reject) => {
       console.log("started");
       this.repositry
-        .fetchFavRecords()
+        .fetchFavRecords(param.name)
         .then((result) => {
-          console.log("result -------------");
+          console.log("result ------------+" + param.name);
           resolve({ type: "success", data: result });
         })
         .catch((err) => {

@@ -16,33 +16,10 @@ class requestClassComponent {
       if (data.length > 0) {
         res.statusCode = 200;
         res.write(JSON.stringify(data));
+        res.end();
       } else {
         this.sendErrStatus();
       }
-    } else if (req.url === "/api/fetchFavouriteRecord") {
-      this.setResponseHeader(res);
-      this.chatService
-        .fetchFavouriteList()
-        .then((data) => {
-          console.log(
-            "fetchFavouriteRecord Controller: " + JSON.stringify(data)
-          );
-          res.statusCode = 200;
-          if (data.type === "success") {
-            console.log("Result: ");
-            res.write(JSON.stringify(data));
-            res.end();
-          } else {
-            res.write({ message: "No data found", type: "success" });
-            res.end();
-          }
-        })
-        .catch((err) => {
-          res.statusCode = 500;
-          console.log("Error");
-          console.log(err);
-          res.end();
-        });
     } else {
       this.sendFailureResponse(res);
     }
@@ -75,6 +52,46 @@ class requestClassComponent {
               .catch((err) => {
                 res.statusCode = 500;
                 res.write(err);
+                res.end();
+              });
+          } else {
+            res.write(
+              JSON.stringify({ message: "object is empty", type: "failure" })
+            );
+            res.end();
+          }
+        });
+    } else if (req.url === "/api/fetchFavouriteRecord") {
+      this.setResponseHeader(res);
+      var body = [];
+      req
+        .on("data", (chunk) => {
+          body.push(chunk);
+        })
+        .on("end", async () => {
+          body = Buffer.concat(body).toString();
+          console.log(req.url);
+          if (body) {
+            this.chatService
+              .fetchFavouriteList(JSON.parse(body))
+              .then((data) => {
+                console.log(
+                  "fetchFavouriteRecord Controller: " + JSON.stringify(data)
+                );
+                res.statusCode = 200;
+                if (data.type === "success") {
+                  console.log("Result: ");
+                  res.write(JSON.stringify(data));
+                  res.end();
+                } else {
+                  res.write({ message: "No data found", type: "success" });
+                  res.end();
+                }
+              })
+              .catch((err) => {
+                res.statusCode = 500;
+                console.log("Error");
+                console.log(err);
                 res.end();
               });
           } else {

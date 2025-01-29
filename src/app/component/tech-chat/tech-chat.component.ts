@@ -223,48 +223,20 @@ export class TechChatComponent implements OnInit, AfterContentInit {
   markFav(val: { isFav: boolean; value: any; message: any }, remove: any) {
     this.commonService
       .setFavouriteDetails({
-        createdBy: new Date(Date.now()),
-        fav_list: val.value,
-        is_active: remove,
+        createdBy: this.userName,
+        favList: val?.value?.toString(),
+        isActive: remove,
       })
       .subscribe((response) => {
         if (response.type === "success") {
           console.log("Success");
+          if (remove) {
+            val.isFav = true;
+          } else {
+            val.isFav = false;
+          }
         }
       });
-    // let favList: any = this.localService.getData(
-    //   APP_CONSTANTS.AUTH.FAVOURITE,
-    //   false
-    // )
-    //   ? this.localService.getData(APP_CONSTANTS.AUTH.FAVOURITE, false)
-    //   : [];
-    // if (remove) {
-    //   val.isFav = true;
-    //   let obj = {
-    //     id: `id${favList.length + 1}`,
-    //     timeStamp: new Date(Date.now()),
-    //     message: val.value,
-    //     isDelete: false,
-    //   };
-    //   favList.push(obj);
-    //   this.localService.saveData(
-    //     APP_CONSTANTS.AUTH.FAVOURITE,
-    //     JSON.stringify(favList),
-    //     false
-    //   );
-    // } else {
-    //   val.isFav = false;
-    //   favList.splice(
-    //     favList.findIndex((e: { message: any }) => e.message == val.message)
-    //   );
-    //   favList.length > 0
-    //     ? this.localService.saveData(
-    //         APP_CONSTANTS.AUTH.FAVOURITE,
-    //         JSON.stringify(this.favouriteList),
-    //         false
-    //       )
-    //     : this.localService.removeData(APP_CONSTANTS.AUTH.FAVOURITE);
-    // }
   }
 
   /**

@@ -49,4 +49,19 @@ export class CommonService {
         })
       );
   }
+
+  fetchFavList(name: any) {
+    //let headers = this.setHeaderDetails();
+    return this.httpClient
+      .post(
+        APP_CONSTANTS.API_CONSTANT.BASE_URL +
+          APP_CONSTANTS.API_CONSTANT.FETCH_FAVOURITE,
+        name
+      )
+      .pipe(
+        map((response: any) => {
+          return response;
+        })
+      );
+  }
 }
