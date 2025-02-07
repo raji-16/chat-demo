@@ -60,5 +60,7 @@ export const APP_CONSTANTS = {
     FETCH_DOWNLOAD_DATA: "api/fetchDownloadedData",
     UPDATE_FAVOURITE: "api/setFavouriteMessage",
     FETCH_FAVOURITE: "api/fetchFavouriteRecord",
+    REMOVE_FAVOURITES: "api/removeFavRecord",
+    UPDATE_HISTORY: "api/updateHistoryRecord",
   },
 };

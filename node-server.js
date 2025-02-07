@@ -1,10 +1,10 @@
 const http = require("http");
-require("dotenv").config();
 const getReq = require("./server/chat-demo.controller");
 const PORT = process.env["PORT"] || 5000;
 const AppDAO = require("./server/db.service");
 const dao = new AppDAO("./database.sqlite3");
 const requestClass = new getReq();
+const test = require("dotenv").config({ path: "./server/.env" });
 const server = http.createServer((req, res) => {
   // ✅ Handle CORS headers for all responses
   res.setHeader("Access-Control-Allow-Origin", "*"); // Allow all origins (change this for security)
@@ -39,11 +39,3 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
 });
-
-// const db = new sqlite3.Database("./test.db", sqlite3.OPEN_READWRITE, (err) => {
-//   if (err) {
-//     return console.error(err.message);
-//   } else {
-//     return console.log("DB connected");
-//   }
-// });

@@ -12,14 +12,16 @@ class requestClassComponent {
   getRequest(req, res) {
     if (req.url === "/api/fetchDownloadedData") {
       this.setResponseHeader(res);
-      let data = this.chatService.fetchData();
-      if (data.length > 0) {
-        res.statusCode = 200;
-        res.write(JSON.stringify(data));
-        res.end();
-      } else {
-        this.sendErrStatus();
-      }
+      this.chatService.fetchData().then((data) => {
+        if (data.type === "success") {
+          res.statusCode = 200;
+          res.write(JSON.stringify(data));
+          res.end();
+        } else {
+          this.sendErrStatus();
+        }
+      });
+      console.log(typeof data);
     } else {
       this.sendFailureResponse(res);
     }
@@ -101,6 +103,129 @@ class requestClassComponent {
             res.end();
           }
         });
+    } else if (req.url === "/api/removeFavRecord") {
+      this.setResponseHeader(res);
+      var body = [];
+      req
+        .on("data", (chunk) => {
+          body.push(chunk);
+        })
+        .on("end", async () => {
+          body = Buffer.concat(body).toString();
+          console.log(req.url);
+          if (body) {
+            this.chatService
+              .removeFavList(body)
+              .then((data) => {
+                console.log("Controller: " + JSON.stringify(data));
+                res.statusCode = 200;
+                res.write(data);
+                res.end();
+              })
+              .catch((err) => {
+                res.statusCode = 500;
+                res.write({ type: "failure", message: err });
+                res.end();
+              });
+          } else {
+            res.write(
+              JSON.stringify({ message: "object is empty", type: "failure" })
+            );
+            res.end();
+          }
+        });
+    } else if (req.url === "/api/fetchResponseChat") {
+      this.setResponseHeader(res);
+
+      var body = [];
+      req
+        .on("data", (chunk) => {
+          body.push(chunk);
+        })
+        .on("end", async () => {
+          body = Buffer.concat(body).toString();
+          console.log(req.url);
+          if (body) {
+            this.chatService
+              .fetchChatResponse(JSON.parse(body))
+              .then((data) => {
+                res.statusCode = 200;
+                res.write(data);
+                res.end();
+              })
+              .catch((err) => {
+                res.statusCode = 500;
+                console.log(err);
+                res.write({ type: "failure", message: err.message });
+                res.end();
+              });
+          } else {
+            res.write(
+              JSON.stringify({ message: "object is empty", type: "failure" })
+            );
+            res.end();
+          }
+        });
+    } else if (req.url === "/api/updateHistoryRecord") {
+      this.setResponseHeader(res);
+      var body = [];
+      req
+        .on("data", (chunk) => {
+          body.push(chunk);
+        })
+        .on("end", async () => {
+          body = Buffer.concat(body).toString();
+          console.log(req.url);
+          if (body) {
+            this.chatService
+              .createHistoryTable(JSON.parse(body))
+              .then((data) => {
+                res.statusCode = 200;
+                res.write(data);
+                res.end();
+              })
+              .catch((err) => {
+                res.statusCode = 500;
+                console.log(err);
+                res.write({ type: "failure", message: err.message });
+                res.end();
+              });
+          } else {
+            res.write(
+              JSON.stringify({ message: "object is empty", type: "failure" })
+            );
+            res.end();
+          }
+        });
+    } else if (req.url === "/api/fetchHistoryData") {
+      this.setResponseHeader(res);
+      var body = [];
+      req
+        .on("data", (chunk) => {
+          body.push(chunk);
+        })
+        .on("end", async () => {
+          body = Buffer.concat(body).toString();
+          console.log(req.url);
+          if (body) {
+            this.chatService.fetchHistoryData(JSON.parse(body)).then((data) => {
+              if (data.type === "success") {
+                res.statusCode = 200;
+                res.write(JSON.stringify(data));
+                res.end();
+              } else {
+                this.sendErrStatus();
+              }
+            });
+          } else {
+            res.write(
+              JSON.stringify({ message: "object is empty", type: "failure" })
+            );
+            res.end();
+          }
+        });
+    } else {
+      this.sendErrStatus();
     }
   }
 

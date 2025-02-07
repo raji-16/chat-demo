@@ -44,6 +44,8 @@ class ChatDAO {
   all(sql, params = []) {
     return new Promise((resolve, reject) => {
       this.db.all(sql, params, function (err, rows) {
+        console.log(sql);
+        console.log(params);
         if (err) {
           console.log("Error running sql: " + sql);
           console.log(err);

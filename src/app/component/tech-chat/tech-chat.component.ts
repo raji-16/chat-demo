@@ -129,26 +129,31 @@ export class TechChatComponent implements OnInit, AfterContentInit {
    */
   fetchExcelData() {
     this.commonService.fetchData().subscribe((response) => {
-      let temp: any = [];
-      let keyVal: any = {};
-      response.forEach(
-        (element: { Question: string | number; Answer: any }, i: any) => {
-          if (element.Question) {
-            {
-              isEmpty(keyVal[element.Question])
-                ? (keyVal[element.Question] = [])
+      if (response.type === "success") {
+        let res = response.data;
+        let temp: any = [];
+        let keyVal: any = {};
+        res.forEach(
+          (element: { Question: string | number; Answer: any }, i: any) => {
+            if (element.Question) {
+              {
+                isEmpty(keyVal[element.Question])
+                  ? (keyVal[element.Question] = [])
+                  : "";
+                keyVal[element.Question].push(element.Answer);
+              }
+            } else {
+              let index = this.findPreviousQnIndex(res, i);
+              element.Answer
+                ? keyVal[res[index].Question].push(element.Answer)
                 : "";
-              keyVal[element.Question].push(element.Answer);
             }
-          } else {
-            let index = this.findPreviousQnIndex(response, i);
-            element.Answer
-              ? keyVal[response[index].Question].push(element.Answer)
-              : "";
           }
-        }
-      );
-      this.finalData = cloneDeep(keyVal);
+        );
+        this.finalData = cloneDeep(keyVal);
+      } else {
+        this.finalData = [];
+      }
     });
   }
   /**
@@ -303,9 +308,26 @@ export class TechChatComponent implements OnInit, AfterContentInit {
     return getHistory;
   }
 
+  updateHistory() {
+    this.commonService
+      .insertHistoryRecord({
+        header: this.postInput[0].value,
+        value: this.postInput,
+        isActive: 1,
+        createdBy: this.userName,
+      })
+      .subscribe((response) => {
+        if (response.type === "success") {
+          console.log("data inserted successfully");
+        } else {
+          console.log("Something went wrong");
+        }
+      });
+  }
   ngOnDestroy() {
     if (this.activatedRouter.snapshot.url[0].path === "chat-tech") {
-      this.saveHistory();
+      //this.saveHistory();
+      this.updateHistory();
     }
   }
 }

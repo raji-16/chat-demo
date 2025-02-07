@@ -64,4 +64,32 @@ export class CommonService {
         })
       );
   }
+
+  deleteFavouriteDetails(request: any) {
+    return this.httpClient
+      .post(
+        APP_CONSTANTS.API_CONSTANT.BASE_URL +
+          APP_CONSTANTS.API_CONSTANT.REMOVE_FAVOURITES,
+        request
+      )
+      .pipe(
+        map((response: any) => {
+          return response;
+        })
+      );
+  }
+
+  insertHistoryRecord(request: any) {
+    return this.httpClient
+      .post(
+        APP_CONSTANTS.API_CONSTANT.BASE_URL +
+          APP_CONSTANTS.API_CONSTANT.UPDATE_HISTORY,
+        request
+      )
+      .pipe(
+        map((response: any) => {
+          return response;
+        })
+      );
+  }
 }

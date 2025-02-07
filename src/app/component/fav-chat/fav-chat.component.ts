@@ -6,6 +6,7 @@ import {
   Output,
   ViewEncapsulation,
   EventEmitter,
+  OnDestroy,
 } from "@angular/core";
 import { sharedModule } from "../../shared/module/shared.module";
 import { LocalService } from "../../service/local.service";
@@ -29,7 +30,7 @@ import { cloneDeep } from "lodash";
   encapsulation: ViewEncapsulation.None,
   animations: [bodyExpansion, messageAnimation],
 })
-export class FavChatComponent implements OnInit {
+export class FavChatComponent implements OnInit, OnDestroy {
   @Output() selectionEvent = new EventEmitter<any>();
   @Input() userData: any;
   events: string[] = [];
@@ -68,6 +69,7 @@ export class FavChatComponent implements OnInit {
   }
 
   fetchFavList() {
+    this.favList = [];
     this.commonService
       .fetchFavList({ name: this.inputData.userName })
       .subscribe((response) => {
@@ -92,19 +94,15 @@ export class FavChatComponent implements OnInit {
    * @method: Removing favourite
    */
   removeFav() {
-    let removeList = this.favList.filter((e: any) => e.isDelete);
-    removeList.forEach((e: any) => {
-      this.favList.splice(
-        this.favList.findIndex((a: any) => a.id === e.id),
-        1
-      );
-    });
-    this.isRemove = this.favList.some((e: any) => e.isDelete);
-    this.localService.saveData(
-      APP_CONSTANTS.AUTH.FAVOURITE,
-      JSON.stringify(this.favList),
-      false
-    );
+    const removeList = this.favList.filter((e: any) => e.isDelete);
+    this.commonService
+      .deleteFavouriteDetails(removeList)
+      .subscribe((response) => {
+        if (response.type === "success") {
+          console.log("Success");
+          this.fetchFavList();
+        }
+      });
   }
 
   /**
@@ -113,7 +111,16 @@ export class FavChatComponent implements OnInit {
    * @param type
    */
   selectFavItem(fav: any) {
-    fav.isDelete = !fav?.isDelete;
+    if (!fav.isDelete) {
+      fav.isDelete = true;
+    } else {
+      fav.isDelete = false;
+    }
+
     this.isRemove = this.favList.some((e: any) => e.isDelete);
+  }
+
+  ngOnDestroy(): void {
+    this.favList = [];
   }
 }

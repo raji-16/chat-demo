@@ -8,11 +8,8 @@ class ChatRepository {
     return this.dao.run(sql, param);
   }
 
-  async fetchFavRecords(name) {
-    return this.dao.all(
-      `SELECT * FROM favourite_list WHERE is_active=? AND created_by=?`,
-      [1, name]
-    );
+  async fetchRecord(query, name) {
+    return this.dao.all(query, [1, name]);
   }
 }
 
